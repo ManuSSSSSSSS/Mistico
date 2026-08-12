@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paso a Paso | Carrera Futbolera</title>
+    <title>Paso a Paso | Carrera Futbolera PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Favicon Pelota ⚽ -->
@@ -15,24 +15,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { 
-            background-color: #090d09; 
+            background-color: #080d08; 
             color: #f1f5f9; 
             font-family: 'Poppins', sans-serif; 
+            user-select: none;
         }
         .font-stadium { 
             font-family: 'Bebas Neue', sans-serif; 
             letter-spacing: 2px;
         }
         .grass-pattern {
-            background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, rgba(3,26,13,0.95) 100%);
+            background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(2,20,9,0.98) 100%);
         }
     </style>
 </head>
-<body class="min-h-screen p-3 sm:p-6 border-t-4 border-emerald-500 flex flex-col justify-between grass-pattern">
+<body class="min-h-screen p-3 sm:p-6 border-t-4 border-emerald-500 flex flex-col justify-between grass-pattern relative overflow-x-hidden">
 
     <div class="max-w-2xl mx-auto w-full">
         <!-- Header -->
-        <header class="flex justify-between items-center gap-2 mb-4 sm:mb-6 border-b border-emerald-900/60 pb-3">
+        <header class="flex justify-between items-center gap-2 mb-4 border-b border-emerald-900/60 pb-3">
             <div class="flex items-center gap-2">
                 <span class="text-3xl">⚽</span>
                 <h1 class="text-2xl sm:text-4xl font-stadium tracking-wider text-white">
@@ -47,79 +48,97 @@
             </a>
         </header>
 
-        <!-- Barra de Estadísticas de Carrera (Mobile Optimized) -->
-        <div class="grid grid-cols-3 gap-2 bg-slate-900/90 p-3 rounded-xl border border-slate-800 mb-4 text-center">
+        <!-- Dashboard del Jugador -->
+        <div class="grid grid-cols-4 gap-1.5 bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 mb-4 text-center">
             <div>
-                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">🔥 Mística</span>
-                <span id="statPotrero" class="text-lg sm:text-2xl font-stadium text-emerald-400">50%</span>
+                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">🔥 Mística</span>
+                <span id="statPotrero" class="text-base sm:text-xl font-stadium text-emerald-400">50%</span>
             </div>
             <div>
-                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">📋 Broma / DT</span>
-                <span id="statDT" class="text-lg sm:text-2xl font-stadium text-sky-400">50%</span>
+                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">📋 DT</span>
+                <span id="statDT" class="text-base sm:text-xl font-stadium text-sky-400">50%</span>
             </div>
             <div>
-                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">📣 Hinchada</span>
-                <span id="statHinchada" class="text-lg sm:text-2xl font-stadium text-amber-400">50%</span>
+                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">📣 Hinchada</span>
+                <span id="statHinchada" class="text-base sm:text-xl font-stadium text-amber-400">50%</span>
+            </div>
+            <div>
+                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">⚽ Goles</span>
+                <span id="statGoles" class="text-base sm:text-xl font-stadium text-white">0</span>
             </div>
         </div>
 
-        <!-- Tarjeta Principal del Partido / Decisión -->
-        <main id="mainCard" class="bg-slate-900/95 border border-emerald-800/60 rounded-2xl p-4 sm:p-7 shadow-2xl backdrop-blur-md mb-6">
+        <!-- Tarjeta Principal del Partido / Evento -->
+        <main id="mainCard" class="bg-slate-900/95 border border-emerald-800/60 rounded-2xl p-4 sm:p-7 shadow-2xl backdrop-blur-md mb-6 relative">
             
             <div class="flex justify-between items-center mb-3">
                 <span id="stageBadge" class="bg-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full uppercase">
-                    Etapa 1: Quinta División
+                    Cargando...
                 </span>
                 <span id="matchNumber" class="text-xs text-slate-400 font-medium">
-                    Fecha 1 de 10
+                    Fecha 1
                 </span>
             </div>
 
-            <h2 id="eventTitle" class="text-xl sm:text-3xl font-stadium text-white mb-2 leading-snug">
-                Cargando inicio de carrera...
+            <h2 id="eventTitle" class="text-xl sm:text-3xl font-stadium text-white mb-2 leading-tight">
+                Preparando el debut...
             </h2>
 
             <p id="eventDesc" class="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
-                Preparando el terreno de juego.
+                Saltando a la cancha.
             </p>
 
-            <!-- Opciones de Decisiones Tácticas / Vida de Jugador -->
+            <!-- Opciones de Decisiones -->
             <div id="decisionsGrid" class="space-y-2.5">
-                <!-- Se inyectan con JS -->
+                <!-- Inyectadas por JS -->
             </div>
         </main>
 
-        <!-- Sección de Apoyo para Desarrollo -->
+        <!-- Bloque de Apoyo al Desarrollador -->
         <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-emerald-900/50 text-center mb-6 shadow-md">
             <h3 class="text-lg sm:text-xl font-stadium text-emerald-400 mb-1">🙌 Apoyá el desarrollo del juego</h3>
             <p class="text-xs text-slate-300 max-w-md mx-auto mb-3 leading-normal">
-                Desarrollo herramientas e historias independientes. Tu apoyo voluntario ayuda a mantener los servidores online y agregar nuevas temporadas, clubes y ligas.
+                Desarrollo juegos e historias independientes. Tu apoyo nos ayuda a meter más ligas, eventos de vestuario y memes coperos.
             </p>
             <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl transition text-xs sm:text-sm shadow-md">
                 <span>⚽</span> Apoyar el proyecto ($2 - $5 USD)
             </a>
         </section>
 
-        <!-- Caja de Sugerencias para Futuras Versiones -->
+        <!-- Caja de Sugerencias -->
         <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-slate-800 text-center">
-            <h3 class="text-lg sm:text-xl font-stadium text-amber-400 mb-1">💡 Dejá tus sugerencias o ideas para desarrollar</h3>
+            <h3 class="text-lg sm:text-xl font-stadium text-amber-400 mb-1">💡 Dejá tus sugerencias o ideas</h3>
             <p class="text-xs text-slate-400 mb-3">
-                ¿Qué situaciones de vestuario, cargadas o partidos históricos te gustaría que sumemos a la carrera?
+                ¿Qué historia de vestuario, pelea o clásico te gustaría sumar?
             </p>
             
             <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-2">
-                <input type="text" id="userIdea" required placeholder="Ej: Sumar la posibilidad de jugar en la Selección o pelear un clásico picante..." 
+                <input type="text" id="userIdea" required placeholder="Ej: Sumar oferta de Europa, quilombo con el VAR o la Selección..." 
                        class="w-full bg-slate-950 text-white px-3.5 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-xs sm:text-sm">
                 <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-amber-400 font-bold py-2 rounded-xl border border-amber-500/30 transition text-xs sm:text-sm">
                     Enviar Sugerencia 🚀
                 </button>
             </form>
-            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Sugerencia anotada correctamente! Gracias por participar.</p>
+            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Sugerencia recibida! Muchas gracias.</p>
         </section>
     </div>
 
+    <!-- Modal In-Game de Notificación / Consecuencia (Remplaza alerts feas) -->
+    <div id="gameModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+        <div class="bg-slate-900 p-5 sm:p-6 rounded-2xl max-w-sm w-full border border-emerald-500/40 text-center shadow-2xl transform transition-all">
+            <div id="modalIcon" class="text-4xl mb-2">⚽</div>
+            <h3 id="modalTitle" class="text-2xl font-stadium text-white mb-2">¡Resultado!</h3>
+            <p id="modalMessage" class="text-xs sm:text-sm text-slate-300 mb-5 leading-relaxed">
+                Descripción del suceso.
+            </p>
+            <button onclick="closeGameModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                Continuar Carrera ⏩
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Sistema de Estado del Jugador
+        // Estadísticas del Jugador
         let playerStats = {
             potrero: 50,
             dt: 50,
@@ -130,153 +149,167 @@
 
         let currentStep = 0;
 
-        // Historia Extensa de Carrera (10 Decisiones con Riqueza Táctica y Folclórica)
+        // Banco de Eventos Extendido (12 eventos variados)
         const careerEvents = [
             {
                 stage: "Etapa 1: Quinta División",
-                title: "Prueba de Jugadores",
-                desc: "Minuto 85 en el partido de prueba. El DT del club de Primera te está mirando desde el banco. Vas 0 a 0.",
+                title: "La Prueba de Jugadores",
+                desc: "Minuto 88 en la cancha auxiliar. Vas 0 a 0 y el DT te está mirando fija con la libreta en la mano.",
                 options: [
                     {
-                        text: "Pedís la pelota, encarás a dos y sacás un zapatazo al ángulo.",
+                        text: "Pedís la pelota, encaras al central y sacas un zapatazo cruzado.",
                         effects: { potrero: +15, dt: +10, hinchada: +10, goals: 1 },
-                        feedback: "⚽ ¡Golazo terrible! El DT anotó tu nombre con resaltador."
+                        icon: "⚽",
+                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. El DT te marcó en rojo como prioridad."
                     },
                     {
-                        text: "Jugás simple a un toque y das indicaciones ordenando al equipo.",
+                        text: "Jugás simple a un toque y das indicaciones para ordenar al equipo.",
                         effects: { potrero: -5, dt: +20, hinchada: 0, goals: 0 },
-                        feedback: "📋 Al DT le encantó tu disciplina táctica."
+                        icon: "📋",
+                        feedback: "Al cuerpo técnico le encantó tu inteligencia táctica y voz de mando."
                     },
                     {
-                        text: "Trabas con la cabeza y te cruzás con el central rival.",
-                        effects: { potrero: +20, dt: -5, hinchada: +20, goals: 0 },
-                        feedback: "🔥 Mística pura. La gente que estaba en la tribuna te aplaudió."
+                        text: "Vas a trabar con la cabeza abajo y te cruzás feo con el '5' rival.",
+                        effects: { potrero: +25, dt: -5, hinchada: +20, goals: 0 },
+                        icon: "🔥",
+                        feedback: "Mística pura. La gente de la tribuna se levantó a aplaudir la guapeza."
                     }
                 ]
             },
             {
                 stage: "Etapa 1: Reserva",
-                title: "El Primer Contrato",
-                desc: "Te ofrecen firmar tu primer contrato profesional, pero te entero que el club rival también te está sondeando.",
+                title: "Noche de Salida Pre-Partido",
+                desc: "Tus amigos te invitan a salir la noche previa a un partido clave contra la Reserva del rival tradicional.",
                 options: [
                     {
-                        text: "Firmás con el club de tus amores sin dudarlo.",
-                        effects: { potrero: +10, dt: +10, hinchada: +25 },
-                        feedback: "📣 Te ganaste el corazón de los hinchas antes de debutar."
+                        text: "Te quedás descansando con té y viendo videos del rival.",
+                        effects: { potrero: -5, dt: +15, hinchada: +5 },
+                        icon: "🛌",
+                        feedback: "Llegaste 10 puntos al partido. Tu profesionalismo rindió frutos."
                     },
                     {
-                        text: "Negociás un mejor sueldo usando la oferta rival como presión.",
-                        effects: { potrero: +5, dt: -10, hinchada: -15 },
-                        feedback: "💸 Cobrás mejor, pero en el vestuario no gustó mucho."
+                        text: "Vas a la fiesta 'un rato' y volvés a las 4 AM sin que se enteren.",
+                        effects: { potrero: +20, dt: -15, hinchada: 0 },
+                        icon: "🕺",
+                        feedback: "Te costó arrancar el partido, pero en la cancha tiraste dos caños inolvidables."
                     }
                 ]
             },
             {
-                stage: "Etapa 2: Debut en Primera",
-                title: "Noche de Debut",
-                desc: "Entrás al campo en el segundo tiempo. Perdés 1 a 0 y la pelota te queda picando en el área.",
+                stage: "Etapa 2: Debut Oficial",
+                title: "El Bautismo en Primera",
+                desc: "Entrás al campo en el segundo tiempo. Perdés 1 a 0 y la primera pelota te queda picando en la puerta del área.",
                 options: [
                     {
-                        text: "Definís fuerte al primer palo.",
+                        text: "Definís de primera rompiéndole el arco al arquero.",
                         effects: { potrero: +10, dt: +10, hinchada: +15, goals: 1 },
-                        feedback: "⚽ ¡Empate agónico en tu debut!"
+                        icon: "⚽",
+                        feedback: "¡Golazo agónico! Empataste el partido en tu debut y la cancha vino abajo."
                     },
                     {
-                        text: "Asistís a tu compañero mejor ubicado.",
-                        effects: { potrero: 0, dt: +20, hinchada: +10 },
-                        feedback: "👏 Gran pase de gol. Demostraste madurez."
+                        text: "Enganchás para tu pierna hábil y das una asistencia de gol.",
+                        effects: { potrero: +5, dt: +20, hinchada: +10 },
+                        icon: "🎯",
+                        feedback: "Asistencia perfecta. Demostraste una serenidad impropia para un debutante."
                     }
                 ]
             },
             {
-                stage: "Etapa 2: Clásico de la Ciudad",
-                title: "El Histórico Clásico",
-                desc: "Llegó el día del clásico. El partido está picado y el rival te busca con chicanas.",
+                stage: "Etapa 2: Clásico Picante",
+                title: "El Histórico 7 a 0",
+                desc: "Van ganando 4 a 0 en el clásico. El rival está desbordado y la gente pide ir por el récord histórico del 7-0.",
                 options: [
                     {
-                        text: "Mantenés la cabeza fría y tirás un caño de potrero.",
-                        effects: { potrero: +20, dt: +10, hinchada: +20 },
-                        feedback: "🎩 El caño levantó a todo el estadio."
+                        text: "Pisás la pelota, pedís más intensidad y van a aplastarlos.",
+                        effects: { potrero: +25, dt: +10, hinchada: +30, goals: 2 },
+                        icon: "🔥",
+                        feedback: "¡HISTÓRICO! Terminó en paliza inolvidable. Entraste directo al libro de oro del club."
                     },
                     {
-                        text: "Vas fuerte abajo y armás un tumulto de vestuario.",
-                        effects: { potrero: +15, dt: -15, hinchada: +15 },
-                        feedback: "🟨 Amarilla rápida, pero demostraste guapeza."
+                        text: "Tocás para atrás y enfriás el partido para evitar agresiones.",
+                        effects: { potrero: -15, dt: +10, hinchada: -20 },
+                        feedback: "Evitaste patadas, pero la hinchada te silbó por no apretar al rival caído."
+                    }
+                ]
+            },
+            {
+                stage: "Etapa 3: Vestuario Hirviendo",
+                title: "Cruce de Referentes",
+                desc: "En el entretiempo, el capitán se agarra fuerte con el DT por el esquema táctico. ¿Qué hacés?",
+                options: [
+                    {
+                        text: "Te metés al medio a separar y pedís foco en el partido.",
+                        effects: { potrero: +10, dt: +15, hinchada: +10 },
+                        icon: "🤝",
+                        feedback: "Demostraste pasta de futuro capitán y ordenaste el vestuario."
+                    },
+                    {
+                        text: "Te ponés del lado del capitán apoyando el reclamo.",
+                        effects: { potrero: +15, dt: -20, hinchada: +15 },
+                        icon: "⚔️",
+                        feedback: "El grupo se unió a muerte, pero el DT te miró con recelo."
                     }
                 ]
             },
             {
                 stage: "Etapa 3: Noche Copera",
-                title: "Recibimiento en la Libertadores",
-                desc: "Copa internacional a cancha llena. Bengalas, humo y rival de jerarquía.",
+                title: "Copa Internacional en Brasil",
+                desc: "Cancha explotada, tirantez en la manga y el árbitro cobra un penal dudoso en contra.",
                 options: [
                     {
-                        text: "Arengás al equipo en el túnel antes de salir.",
-                        effects: { potrero: +15, dt: +15, hinchada: +20 },
-                        feedback: "🏆 Salieron a comerse la cancha."
+                        text: "Le copás el espacio al árbitro metiendo presión de equipo copero.",
+                        effects: { potrero: +20, dt: +5, hinchada: +20 },
+                        icon: "🏆",
+                        feedback: "Mística pura. El VAR llamó al árbitro y anularon el penal."
                     },
                     {
-                        text: "Te concentrás en silencio repasando la táctica.",
-                        effects: { potrero: 0, dt: +15, hinchada: 0 },
-                        feedback: "🧠 Concentración absoluta."
+                        text: "Vas a hablar con tu arquero para pasarle el dato de a dónde patea.",
+                        effects: { potrero: +10, dt: +15, hinchada: +10 },
+                        icon: "🧤",
+                        feedback: "¡Tu arquero lo atajó! Festejo de locura en el banco de suplentes."
                     }
                 ]
             },
             {
-                stage: "Etapa 3: Momento Histórico",
-                title: "Buscando la Goleada de Leyenda",
-                desc: "Están ganando cómodos. Recordás goleadas míticas como el 7 a 0. ¿Seguís atacando?",
+                stage: "Etapa 4: Mercado de Pases",
+                title: "La Oferta de Europa",
+                desc: "Llega una oferta millonaria desde Europa, pero el club está jugando las fases finales de la Copa.",
                 options: [
                     {
-                        text: "No aflojás un segundo: querés hacer historia.",
-                        effects: { potrero: +20, dt: +10, hinchada: +25, goals: 2 },
-                        feedback: "🔥 ¡Goleada épica para el recuerdo eterno!"
+                        text: "Te quedás a jugar la Copa rechazando los millones.",
+                        effects: { potrero: +20, dt: +15, hinchada: +35 },
+                        icon: "💙",
+                        feedback: "Gesto de leyenda. La hinchada te hizo una bandera gigante en la tribuna."
                     },
                     {
-                        text: "Tocás corto y hacés rotar la pelota para cuidar el físico.",
-                        effects: { potrero: -10, dt: +15, hinchada: -10 },
-                        feedback: "Cuidaste las piernas para la final."
-                    }
-                ]
-            },
-            {
-                stage: "Etapa 4: Definición por Penales",
-                title: "Tanda de Penales en la Final",
-                desc: "Empate en los 90. Te toca patear el quinto y decisivo penal.",
-                options: [
-                    {
-                        text: "Cruzado arriba, rompiendo la red.",
-                        effects: { potrero: +15, dt: +10, hinchada: +20, goals: 1 },
-                        feedback: "⚽ ¡Imparable! La pelota besó la red."
-                    },
-                    {
-                        text: "Se la picás suavemente al arquero.",
-                        effects: { potrero: +30, dt: -10, hinchada: +30, goals: 1 },
-                        feedback: "😱 ¡Locura total! Arriesgadísimo pero histórico."
+                        text: "Exigís la venta inmediata para asegurar tu futuro económico.",
+                        effects: { potrero: -10, dt: -15, hinchada: -30 },
+                        feedback: "Te fuiste vendido, pero los hinchas te tildaron de 'mercenario'."
                     }
                 ]
             },
             {
                 stage: "Etapa 4: Gran Final",
-                title: "Levantar la Copa",
-                desc: "Suena el pitazo final. ¡Son Campeones! La hinchada corea tu nombre.",
+                title: "Tanda de Penales Decisiva",
+                desc: "Definición por el título. Te toca patear el quinto penal del partido. Toda la gloria en tus pies.",
                 options: [
                     {
-                        text: "Subís al alambrado a festejar con los hinchas.",
-                        effects: { potrero: +20, dt: 0, hinchada: +30, titles: 1 },
-                        feedback: "🏆 Imagen de portada para todos los diarios."
+                        text: "La picás suavemente con total sangre fría.",
+                        effects: { potrero: +35, dt: -5, hinchada: +35, goals: 1, titles: 1 },
+                        icon: "👑",
+                        feedback: "¡LOCURA TOTAL! Entró perezosa al medio. ¡CAMPEONES DE LA COPA!"
                     },
                     {
-                        text: "Vas a abrazar al cuerpo técnico y compañeros.",
-                        effects: { potrero: +5, dt: +25, hinchada: +10, titles: 1 },
-                        feedback: "🤝 Un verdadero líder de vestuario."
+                        text: "Asegurás fuerte al palo derecho del arquero.",
+                        effects: { potrero: +15, dt: +15, hinchada: +20, goals: 1, titles: 1 },
+                        icon: "🏆",
+                        feedback: "¡RED ABULTADA! ¡CAMPEONES DE AMÉRICA! Festejo inolvidable."
                     }
                 ]
             }
         ];
 
         function updateUI() {
-            // Limita stats entre 0 y 100%
             playerStats.potrero = Math.min(100, Math.max(0, playerStats.potrero));
             playerStats.dt = Math.min(100, Math.max(0, playerStats.dt));
             playerStats.hinchada = Math.min(100, Math.max(0, playerStats.hinchada));
@@ -284,6 +317,7 @@
             document.getElementById('statPotrero').innerText = `${playerStats.potrero}%`;
             document.getElementById('statDT').innerText = `${playerStats.dt}%`;
             document.getElementById('statHinchada').innerText = `${playerStats.hinchada}%`;
+            document.getElementById('statGoles').innerText = playerStats.goals;
         }
 
         function loadEvent() {
@@ -303,8 +337,8 @@
 
             ev.options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "w-full bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/80 text-white font-semibold p-3 rounded-xl transition text-xs sm:text-sm text-left leading-normal flex justify-between items-center gap-2";
-                btn.innerHTML = `<span>${opt.text}</span> <span class="text-emerald-400">➡️</span>`;
+                btn.className = "w-full bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/80 text-white font-semibold p-3.5 rounded-xl transition text-xs sm:text-sm text-left leading-snug flex justify-between items-center gap-2 shadow-sm";
+                btn.innerHTML = `<span>${opt.text}</span> <span class="text-emerald-400 font-bold">➡️</span>`;
                 btn.onclick = () => selectOption(opt);
                 grid.appendChild(btn);
             });
@@ -313,15 +347,25 @@
         }
 
         function selectOption(opt) {
-            // Aplicar efectos
+            // Impacto en estadísticas
             if (opt.effects.potrero) playerStats.potrero += opt.effects.potrero;
             if (opt.effects.dt) playerStats.dt += opt.effects.dt;
             if (opt.effects.hinchada) playerStats.hinchada += opt.effects.hinchada;
             if (opt.effects.goals) playerStats.goals += opt.effects.goals;
             if (opt.effects.titles) playerStats.titles += opt.effects.titles;
 
-            alert(opt.feedback);
+            // Abrir Modal Customizado In-Game
+            showGameModal(opt.icon || "⚽", opt.feedback);
+        }
 
+        function showGameModal(icon, message) {
+            document.getElementById('modalIcon').innerText = icon;
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('gameModal').classList.replace('hidden', 'flex');
+        }
+
+        function closeGameModal() {
+            document.getElementById('gameModal').classList.replace('flex', 'hidden');
             currentStep++;
             loadEvent();
         }
@@ -331,22 +375,22 @@
             const main = document.getElementById('mainCard');
             
             let statusTitle = "Leyenda de Potrero";
-            if (playerStats.dt > 75) statusTitle = "Capitán Táctico Inamovible";
-            if (playerStats.hinchada > 75) statusTitle = "Ídolo Eterno del Club";
+            if (playerStats.dt > 75) statusTitle = "Capitán & Mariscal Táctico";
+            if (playerStats.hinchada > 80) statusTitle = "Ídolo Eterno del Club";
 
             main.innerHTML = `
                 <div class="text-center py-2">
                     <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block">
-                        Carrera Finalizada
+                        Fin de la Carrera
                     </span>
                     <h2 class="text-3xl font-stadium text-white mb-1">${statusTitle}</h2>
-                    <p class="text-xs text-slate-300 mb-4">Resumen de tu paso por el fútbol profesional:</p>
+                    <p class="text-xs text-slate-300 mb-4">Números e impacto de tu historia profesional:</p>
                     
                     <div class="grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-5 text-left text-xs sm:text-sm">
-                        <div>⚽ Goles Convertidos: <strong class="text-emerald-400">${playerStats.goals}</strong></div>
-                        <div>🏆 Títulos Ganados: <strong class="text-amber-400">${playerStats.titles}</strong></div>
-                        <div>🔥 Mística Final: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
-                        <div>📣 Cariño Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
+                        <div>⚽ Goles Totales: <strong class="text-emerald-400">${playerStats.goals}</strong></div>
+                        <div>🏆 Títulos: <strong class="text-amber-400">${playerStats.titles}</strong></div>
+                        <div>🔥 Mística: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
+                        <div>📣 Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
                     </div>
 
                     <button onclick="location.reload()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm">
@@ -372,7 +416,6 @@
             }, 4000);
         }
 
-        // Cargar primera decisión
         loadEvent();
     </script>
 </body>
