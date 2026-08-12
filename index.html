@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paso a Paso | Carrera por Edades</title>
+    <title>Paso a Paso | Simulador de Carrera Futbolera</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Favicon Pelota ⚽ -->
@@ -76,7 +76,7 @@
                     Cargando...
                 </span>
                 <span id="matchNumber" class="text-xs text-slate-400 font-medium">
-                    Etapa 1 de 12
+                    Etapa 1 de 11
                 </span>
             </div>
 
@@ -150,7 +150,7 @@
 
         let currentStep = 0;
 
-        // Cronología por Edades
+        // Cronología Extensa por Edades
         const careerEvents = [
             {
                 age: 16,
@@ -162,7 +162,7 @@
                         text: "Pedís la pelota, encaras al central y sacas un zapatazo cruzado.",
                         effects: { potrero: +15, dt: +10, hinchada: +10, goals: 1 },
                         icon: "⚽",
-                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. Te ficharon para la 8va división."
+                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. Te ficharon para las inferiores del club."
                     },
                     {
                         text: "Jugás simple a un toque y das indicaciones para ordenar al equipo.",
@@ -392,7 +392,7 @@
             }
 
             const ev = careerEvents[currentStep];
-            playerStats.age = ev.age; // Actualiza edad en el dashboard
+            playerStats.age = ev.age; 
 
             document.getElementById('stageBadge').innerText = ev.stage;
             document.getElementById('matchNumber').innerText = `Etapa ${currentStep + 1} de ${careerEvents.length}`;
