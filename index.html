@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paso a Paso | Carrera Futbolera PRO</title>
+    <title>Paso a Paso | Carrera por Edades</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Favicon Pelota ⚽ -->
@@ -51,6 +51,10 @@
         <!-- Dashboard del Jugador -->
         <div class="grid grid-cols-4 gap-1.5 bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 mb-4 text-center">
             <div>
+                <span class="text-[9px] sm:text-xs text-amber-400 uppercase font-bold block">🎂 Edad</span>
+                <span id="statEdad" class="text-base sm:text-xl font-stadium text-amber-400">16 Años</span>
+            </div>
+            <div>
                 <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">🔥 Mística</span>
                 <span id="statPotrero" class="text-base sm:text-xl font-stadium text-emerald-400">50%</span>
             </div>
@@ -59,16 +63,12 @@
                 <span id="statDT" class="text-base sm:text-xl font-stadium text-sky-400">50%</span>
             </div>
             <div>
-                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">📣 Hinchada</span>
-                <span id="statHinchada" class="text-base sm:text-xl font-stadium text-amber-400">50%</span>
-            </div>
-            <div>
                 <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">⚽ Goles</span>
                 <span id="statGoles" class="text-base sm:text-xl font-stadium text-white">0</span>
             </div>
         </div>
 
-        <!-- Tarjeta Principal del Partido / Evento -->
+        <!-- Tarjeta Principal del Evento -->
         <main id="mainCard" class="bg-slate-900/95 border border-emerald-800/60 rounded-2xl p-4 sm:p-7 shadow-2xl backdrop-blur-md mb-6 relative">
             
             <div class="flex justify-between items-center mb-3">
@@ -76,12 +76,12 @@
                     Cargando...
                 </span>
                 <span id="matchNumber" class="text-xs text-slate-400 font-medium">
-                    Fecha 1
+                    Etapa 1 de 12
                 </span>
             </div>
 
             <h2 id="eventTitle" class="text-xl sm:text-3xl font-stadium text-white mb-2 leading-tight">
-                Preparando el debut...
+                Iniciando carrera...
             </h2>
 
             <p id="eventDesc" class="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
@@ -98,7 +98,7 @@
         <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-emerald-900/50 text-center mb-6 shadow-md">
             <h3 class="text-lg sm:text-xl font-stadium text-emerald-400 mb-1">🙌 Apoyá el desarrollo del juego</h3>
             <p class="text-xs text-slate-300 max-w-md mx-auto mb-3 leading-normal">
-                Desarrollo juegos e historias independientes. Tu apoyo nos ayuda a meter más ligas, eventos de vestuario y memes coperos.
+                Desarrollo juegos e historias independientes. Tu apoyo nos ayuda a seguir sumando temporadas, decisiones complejas y momentos futboleros.
             </p>
             <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl transition text-xs sm:text-sm shadow-md">
                 <span>⚽</span> Apoyar el proyecto ($2 - $5 USD)
@@ -109,11 +109,11 @@
         <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-slate-800 text-center">
             <h3 class="text-lg sm:text-xl font-stadium text-amber-400 mb-1">💡 Dejá tus sugerencias o ideas</h3>
             <p class="text-xs text-slate-400 mb-3">
-                ¿Qué historia de vestuario, pelea o clásico te gustaría sumar?
+                ¿Qué evento te gustaría vivir a cierta edad (ej: retiro a los 38, ir al Mundial a los 26)?
             </p>
             
             <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-2">
-                <input type="text" id="userIdea" required placeholder="Ej: Sumar oferta de Europa, quilombo con el VAR o la Selección..." 
+                <input type="text" id="userIdea" required placeholder="Ej: Sumar oferta de Arabia a los 34 años, lesión de rodilla a los 22..." 
                        class="w-full bg-slate-950 text-white px-3.5 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-xs sm:text-sm">
                 <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-amber-400 font-bold py-2 rounded-xl border border-amber-500/30 transition text-xs sm:text-sm">
                     Enviar Sugerencia 🚀
@@ -123,7 +123,7 @@
         </section>
     </div>
 
-    <!-- Modal In-Game de Notificación / Consecuencia (Remplaza alerts feas) -->
+    <!-- Modal In-Game de Notificación -->
     <div id="gameModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
         <div class="bg-slate-900 p-5 sm:p-6 rounded-2xl max-w-sm w-full border border-emerald-500/40 text-center shadow-2xl transform transition-all">
             <div id="modalIcon" class="text-4xl mb-2">⚽</div>
@@ -140,6 +140,7 @@
     <script>
         // Estadísticas del Jugador
         let playerStats = {
+            age: 16,
             potrero: 50,
             dt: 50,
             hinchada: 50,
@@ -149,161 +150,225 @@
 
         let currentStep = 0;
 
-        // Banco de Eventos Extendido (12 eventos variados)
+        // Cronología por Edades
         const careerEvents = [
             {
-                stage: "Etapa 1: Quinta División",
-                title: "La Prueba de Jugadores",
-                desc: "Minuto 88 en la cancha auxiliar. Vas 0 a 0 y el DT te está mirando fija con la libreta en la mano.",
+                age: 16,
+                stage: "16 Años - Quinta División",
+                title: "La Prueba en Inferiores",
+                desc: "Tenés 16 años y jugás tu primera prueba formal en el club. Vas 0 a 0 y el DT te mira desde el banco.",
                 options: [
                     {
                         text: "Pedís la pelota, encaras al central y sacas un zapatazo cruzado.",
                         effects: { potrero: +15, dt: +10, hinchada: +10, goals: 1 },
                         icon: "⚽",
-                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. El DT te marcó en rojo como prioridad."
+                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. Te ficharon para la 8va división."
                     },
                     {
                         text: "Jugás simple a un toque y das indicaciones para ordenar al equipo.",
                         effects: { potrero: -5, dt: +20, hinchada: 0, goals: 0 },
                         icon: "📋",
-                        feedback: "Al cuerpo técnico le encantó tu inteligencia táctica y voz de mando."
-                    },
-                    {
-                        text: "Vas a trabar con la cabeza abajo y te cruzás feo con el '5' rival.",
-                        effects: { potrero: +25, dt: -5, hinchada: +20, goals: 0 },
-                        icon: "🔥",
-                        feedback: "Mística pura. La gente de la tribuna se levantó a aplaudir la guapeza."
+                        feedback: "Al cuerpo técnico le encantó tu inteligencia táctica a tan corta edad."
                     }
                 ]
             },
             {
-                stage: "Etapa 1: Reserva",
-                title: "Noche de Salida Pre-Partido",
-                desc: "Tus amigos te invitan a salir la noche previa a un partido clave contra la Reserva del rival tradicional.",
+                age: 18,
+                stage: "18 Años - El Debut",
+                title: "Primer Partido Oficial",
+                desc: "Cumpliste 18 años y te citan por primera vez en el plantel profesional. Entrás en el segundo tiempo.",
                 options: [
                     {
-                        text: "Te quedás descansando con té y viendo videos del rival.",
-                        effects: { potrero: -5, dt: +15, hinchada: +5 },
-                        icon: "🛌",
-                        feedback: "Llegaste 10 puntos al partido. Tu profesionalismo rindió frutos."
-                    },
-                    {
-                        text: "Vas a la fiesta 'un rato' y volvés a las 4 AM sin que se enteren.",
-                        effects: { potrero: +20, dt: -15, hinchada: 0 },
-                        icon: "🕺",
-                        feedback: "Te costó arrancar el partido, pero en la cancha tiraste dos caños inolvidables."
-                    }
-                ]
-            },
-            {
-                stage: "Etapa 2: Debut Oficial",
-                title: "El Bautismo en Primera",
-                desc: "Entrás al campo en el segundo tiempo. Perdés 1 a 0 y la primera pelota te queda picando en la puerta del área.",
-                options: [
-                    {
-                        text: "Definís de primera rompiéndole el arco al arquero.",
+                        text: "Definís de primera rompiéndole el arco al arquero rival.",
                         effects: { potrero: +10, dt: +10, hinchada: +15, goals: 1 },
                         icon: "⚽",
-                        feedback: "¡Golazo agónico! Empataste el partido en tu debut y la cancha vino abajo."
+                        feedback: "¡Golazo de debut con 18 años! La cancha entera coreó tu nombre."
                     },
                     {
-                        text: "Enganchás para tu pierna hábil y das una asistencia de gol.",
+                        text: "Metés una asistencia de gol con un pase entre líneas perfecto.",
                         effects: { potrero: +5, dt: +20, hinchada: +10 },
                         icon: "🎯",
-                        feedback: "Asistencia perfecta. Demostraste una serenidad impropia para un debutante."
+                        feedback: "Asistencia magistral. El periodismo te catalogó como la 'joya' de la cantera."
                     }
                 ]
             },
             {
-                stage: "Etapa 2: Clásico Picante",
-                title: "El Histórico 7 a 0",
-                desc: "Van ganando 4 a 0 en el clásico. El rival está desbordado y la gente pide ir por el récord histórico del 7-0.",
+                age: 20,
+                stage: "20 Años - El Clásico",
+                title: "La Noche del 7 a 0",
+                desc: "A tus 20 años jugás tu primer clásico de titular. Van 4-0 arriba y el rival está desbordado.",
                 options: [
                     {
-                        text: "Pisás la pelota, pedís más intensidad y van a aplastarlos.",
+                        text: "Apretás el acelerador e ir a buscar la goleada histórica del 7-0.",
                         effects: { potrero: +25, dt: +10, hinchada: +30, goals: 2 },
                         icon: "🔥",
-                        feedback: "¡HISTÓRICO! Terminó en paliza inolvidable. Entraste directo al libro de oro del club."
+                        feedback: "¡HISTÓRICO 7-0! Tarde gloriosa que la hinchada recordará para siempre."
                     },
                     {
-                        text: "Tocás para atrás y enfriás el partido para evitar agresiones.",
-                        effects: { potrero: -15, dt: +10, hinchada: -20 },
-                        feedback: "Evitaste patadas, pero la hinchada te silbó por no apretar al rival caído."
+                        text: "Tocás corto y hacés rotar la pelota para cuidar el físico.",
+                        effects: { potrero: -10, dt: +10, hinchada: -15 },
+                        icon: "🧱",
+                        feedback: "Ganaron cómodos, pero la tribuna se quedó con ganas de hacer más historia."
                     }
                 ]
             },
             {
-                stage: "Etapa 3: Vestuario Hirviendo",
-                title: "Cruce de Referentes",
-                desc: "En el entretiempo, el capitán se agarra fuerte con el DT por el esquema táctico. ¿Qué hacés?",
+                age: 22,
+                stage: "22 Años - Madurez Táctica",
+                title: "Pelea en el Vestuario",
+                desc: "En el entretiempo, el capitán se agarra fuerte con el DT por el esquema táctico.",
                 options: [
                     {
-                        text: "Te metés al medio a separar y pedís foco en el partido.",
+                        text: "Ponés paños fríos y pedís enfocarse en ganar los 3 puntos.",
                         effects: { potrero: +10, dt: +15, hinchada: +10 },
                         icon: "🤝",
-                        feedback: "Demostraste pasta de futuro capitán y ordenaste el vestuario."
+                        feedback: "Demostraste liderazgo de capitán con solo 22 años."
                     },
                     {
-                        text: "Te ponés del lado del capitán apoyando el reclamo.",
-                        effects: { potrero: +15, dt: -20, hinchada: +15 },
+                        text: "Bancás al capitán exigiendo salir a atacar más.",
+                        effects: { potrero: +15, dt: -15, hinchada: +15 },
                         icon: "⚔️",
-                        feedback: "El grupo se unió a muerte, pero el DT te miró con recelo."
+                        feedback: "El grupo se unió a muerte, aunque al DT no le gustó la rebelión."
                     }
                 ]
             },
             {
-                stage: "Etapa 3: Noche Copera",
-                title: "Copa Internacional en Brasil",
-                desc: "Cancha explotada, tirantez en la manga y el árbitro cobra un penal dudoso en contra.",
+                age: 24,
+                stage: "24 Años - Gloria Copera",
+                title: "Noche de Copa en Brasil",
+                desc: "Pico de rendimiento físico. Jugás la vuelta de la semifinal en Río de Janeiro.",
                 options: [
                     {
-                        text: "Le copás el espacio al árbitro metiendo presión de equipo copero.",
-                        effects: { potrero: +20, dt: +5, hinchada: +20 },
+                        text: "Copás el medio campo y manejás los tiempos con mística.",
+                        effects: { potrero: +20, dt: +15, hinchada: +25, goals: 1 },
                         icon: "🏆",
-                        feedback: "Mística pura. El VAR llamó al árbitro y anularon el penal."
+                        feedback: "Cátedra de fútbol en Brasil. Clasificaron a la gran final."
                     },
                     {
-                        text: "Vas a hablar con tu arquero para pasarle el dato de a dónde patea.",
-                        effects: { potrero: +10, dt: +15, hinchada: +10 },
-                        icon: "🧤",
-                        feedback: "¡Tu arquero lo atajó! Festejo de locura en el banco de suplentes."
+                        text: "Presionás al árbitro ante cada fallo para enfriar el partido.",
+                        effects: { potrero: +25, dt: +5, hinchada: +20 },
+                        icon: "🧠",
+                        feedback: "Mística copera pura. Aguantaron el resultado histórico."
                     }
                 ]
             },
             {
-                stage: "Etapa 4: Mercado de Pases",
-                title: "La Oferta de Europa",
-                desc: "Llega una oferta millonaria desde Europa, pero el club está jugando las fases finales de la Copa.",
+                age: 26,
+                stage: "26 Años - El Dilema",
+                title: "Oferta de Europa vs. Amor al Club",
+                desc: "Tenés 26 años, estás en tu mejor momento y llega una oferta millonaria del fútbol europeo.",
                 options: [
                     {
-                        text: "Te quedás a jugar la Copa rechazando los millones.",
-                        effects: { potrero: +20, dt: +15, hinchada: +35 },
+                        text: "Rechazás los millones para salir Campeón de América con tu club.",
+                        effects: { potrero: +20, dt: +15, hinchada: +40, titles: 1 },
                         icon: "💙",
-                        feedback: "Gesto de leyenda. La hinchada te hizo una bandera gigante en la tribuna."
+                        feedback: "¡CAMPEONES DE AMÉRICA! Te convertiste en bandera del club."
                     },
                     {
-                        text: "Exigís la venta inmediata para asegurar tu futuro económico.",
-                        effects: { potrero: -10, dt: -15, hinchada: -30 },
-                        feedback: "Te fuiste vendido, pero los hinchas te tildaron de 'mercenario'."
+                        text: "Aceptás dar el salto a Europa para asegurar tu futuro.",
+                        effects: { potrero: -10, dt: -10, hinchada: -25, titles: 1 },
+                        icon: "✈️",
+                        feedback: "Te fuiste a Europa ganando títulos allá, aunque la hinchada extrañó tu presencia."
                     }
                 ]
             },
             {
-                stage: "Etapa 4: Gran Final",
-                title: "Tanda de Penales Decisiva",
-                desc: "Definición por el título. Te toca patear el quinto penal del partido. Toda la gloria en tus pies.",
+                age: 28,
+                stage: "28 Años - Consagracion",
+                title: "Llamado a la Selección",
+                desc: "Te citan a la Selección en tu plenitud física para jugar las Eliminatorias.",
                 options: [
                     {
-                        text: "La picás suavemente con total sangre fría.",
-                        effects: { potrero: +35, dt: -5, hinchada: +35, goals: 1, titles: 1 },
-                        icon: "👑",
-                        feedback: "¡LOCURA TOTAL! Entró perezosa al medio. ¡CAMPEONES DE LA COPA!"
+                        text: "Pedís la camiseta '10' y te haces cargo de la creación de juego.",
+                        effects: { potrero: +15, dt: +20, hinchada: +20, goals: 2 },
+                        icon: "🇦🇷",
+                        feedback: "Figura de las Eliminatorias. Todo el país rinde tributo a tu nivel."
                     },
                     {
-                        text: "Asegurás fuerte al palo derecho del arquero.",
-                        effects: { potrero: +15, dt: +15, hinchada: +20, goals: 1, titles: 1 },
+                        text: "Jugás en función del equipo sin buscar el protagonismo individual.",
+                        effects: { potrero: +5, dt: +25, hinchada: +15 },
+                        icon: "🤝",
+                        feedback: "Rendimiento impecable. Te volviste pilar inamovible para el DT."
+                    }
+                ]
+            },
+            {
+                age: 30,
+                stage: "30 Años - El Mundial",
+                title: "La Cita Máxima",
+                desc: "Llegás a los 30 años jugando la Final del Mundo. Minuto 90 y el partido está 1-1.",
+                options: [
+                    {
+                        text: "Clavás un tiro libre milimétrico al ángulo.",
+                        effects: { potrero: +35, dt: +20, hinchada: +40, goals: 1, titles: 1 },
+                        icon: "⭐",
+                        feedback: "¡¡¡CAMPEONES DEL MUNDO!!! Entraste directo al Olimpo del fútbol."
+                    },
+                    {
+                        text: "Metés un pase de gol entre tres defensores.",
+                        effects: { potrero: +25, dt: +25, hinchada: +35, titles: 1 },
                         icon: "🏆",
-                        feedback: "¡RED ABULTADA! ¡CAMPEONES DE AMÉRICA! Festejo inolvidable."
+                        feedback: "¡¡¡CAMPEONES DEL MUNDO!!! Asistencia de leyenda para la tercera estrella."
+                    }
+                ]
+            },
+            {
+                age: 33,
+                stage: "33 Años - Experiencia",
+                title: "El Retorno al Club",
+                desc: "Con 33 años decidís volver a tu club de origen para quemar los últimos cartuchos.",
+                options: [
+                    {
+                        text: "Asumís el rol de líder veterano guiando a los pibes de inferiores.",
+                        effects: { potrero: +15, dt: +20, hinchada: +25 },
+                        icon: "👴",
+                        feedback: "Recibimiento inolvidable a estadio lleno. El ídolo volvió a casa."
+                    },
+                    {
+                        text: "Exigís ser titular indiscutido pese a la falta de ritmo físico.",
+                        effects: { potrero: +10, dt: -15, hinchada: +10 },
+                        icon: "👑",
+                        feedback: "Tu jerarquía salva partidos, aunque el físico ya se siente."
+                    }
+                ]
+            },
+            {
+                age: 36,
+                stage: "36 Años - La Última Copa",
+                title: "El Clásico del Retiro",
+                desc: "Último clásico de tu carrera. El cuerpo pesa, pero la mística está intacta.",
+                options: [
+                    {
+                        text: "Frotás la lámpara y metés un gol de tiro libre al minuto 93.",
+                        effects: { potrero: +30, dt: +10, hinchada: +30, goals: 1, titles: 1 },
+                        icon: "⚽",
+                        feedback: "¡GOLAZO AGÓNICO! Broche de oro perfecto para despedirte de los clásicos."
+                    },
+                    {
+                        text: "Manejás la pelota con la suela aguantando el triunfo 1-0.",
+                        effects: { potrero: +20, dt: +15, hinchada: +20 },
+                        icon: "🎩",
+                        feedback: "Cátedra de potrero y experiencia para asegurar la victoria."
+                    }
+                ]
+            },
+            {
+                age: 38,
+                stage: "38 Años - El Adiós",
+                title: "El Partido de Despedida",
+                desc: "Llegó el día del retiro a los 38 años. Estadio repleto, luces apagadas y micrófono en mano.",
+                options: [
+                    {
+                        text: "Le agradecés entre lágrimas a la hinchada por acompañarte 22 años.",
+                        effects: { potrero: +20, dt: +10, hinchada: +35 },
+                        icon: "👑",
+                        feedback: "Estatua inaugurada en el hall central. Ídolo eterno de la institución."
+                    },
+                    {
+                        text: "Hacés tu último gol de taco para cerrar una carrera mágica.",
+                        effects: { potrero: +30, dt: 0, hinchada: +30, goals: 1 },
+                        icon: "✨",
+                        feedback: "Cierre de película. Te retiraste en lo más alto del fútbol."
                     }
                 ]
             }
@@ -314,9 +379,9 @@
             playerStats.dt = Math.min(100, Math.max(0, playerStats.dt));
             playerStats.hinchada = Math.min(100, Math.max(0, playerStats.hinchada));
 
+            document.getElementById('statEdad').innerText = `${playerStats.age} Años`;
             document.getElementById('statPotrero').innerText = `${playerStats.potrero}%`;
             document.getElementById('statDT').innerText = `${playerStats.dt}%`;
-            document.getElementById('statHinchada').innerText = `${playerStats.hinchada}%`;
             document.getElementById('statGoles').innerText = playerStats.goals;
         }
 
@@ -327,8 +392,10 @@
             }
 
             const ev = careerEvents[currentStep];
+            playerStats.age = ev.age; // Actualiza edad en el dashboard
+
             document.getElementById('stageBadge').innerText = ev.stage;
-            document.getElementById('matchNumber').innerText = `Paso ${currentStep + 1} de ${careerEvents.length}`;
+            document.getElementById('matchNumber').innerText = `Etapa ${currentStep + 1} de ${careerEvents.length}`;
             document.getElementById('eventTitle').innerText = ev.title;
             document.getElementById('eventDesc').innerText = ev.desc;
 
@@ -347,14 +414,12 @@
         }
 
         function selectOption(opt) {
-            // Impacto en estadísticas
             if (opt.effects.potrero) playerStats.potrero += opt.effects.potrero;
             if (opt.effects.dt) playerStats.dt += opt.effects.dt;
             if (opt.effects.hinchada) playerStats.hinchada += opt.effects.hinchada;
             if (opt.effects.goals) playerStats.goals += opt.effects.goals;
             if (opt.effects.titles) playerStats.titles += opt.effects.titles;
 
-            // Abrir Modal Customizado In-Game
             showGameModal(opt.icon || "⚽", opt.feedback);
         }
 
@@ -374,27 +439,28 @@
             updateUI();
             const main = document.getElementById('mainCard');
             
-            let statusTitle = "Leyenda de Potrero";
-            if (playerStats.dt > 75) statusTitle = "Capitán & Mariscal Táctico";
-            if (playerStats.hinchada > 80) statusTitle = "Ídolo Eterno del Club";
+            let statusTitle = "Leyenda Absoluta (16 a 38 Años)";
+            if (playerStats.hinchada > 85) statusTitle = "Ídolo Eterno del Club & Dios de la Hinchada";
+            else if (playerStats.dt > 85) statusTitle = "Mariscal Táctico & Futuro DT";
+            else if (playerStats.potrero > 85) statusTitle = "El Rey del Potrero y la Mística";
 
             main.innerHTML = `
                 <div class="text-center py-2">
                     <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block">
-                        Fin de la Carrera
+                        Carrera Completa (22 Años de Trayectoria)
                     </span>
                     <h2 class="text-3xl font-stadium text-white mb-1">${statusTitle}</h2>
                     <p class="text-xs text-slate-300 mb-4">Números e impacto de tu historia profesional:</p>
                     
                     <div class="grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-5 text-left text-xs sm:text-sm">
                         <div>⚽ Goles Totales: <strong class="text-emerald-400">${playerStats.goals}</strong></div>
-                        <div>🏆 Títulos: <strong class="text-amber-400">${playerStats.titles}</strong></div>
-                        <div>🔥 Mística: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
-                        <div>📣 Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
+                        <div>🏆 Títulos Ganados: <strong class="text-amber-400">${playerStats.titles}</strong></div>
+                        <div>🔥 Mística Final: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
+                        <div>📣 Cariño Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
                     </div>
 
-                    <button onclick="location.reload()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm">
-                        Iniciar Nueva Carrera 🔄
+                    <button onclick="location.reload()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg">
+                        Revivir Nueva Carrera (16 a 38 Años) 🔄
                     </button>
                 </div>
             `;
