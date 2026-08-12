@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Místico | Folclore & Chicanas de Fútbol</title>
+    <title>Paso a Paso | Carrera Futbolera</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Favicon Pelota ⚽ -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
 
-    <!-- Script de Gumroad para Apoyo/Donaciones -->
+    <!-- Script de Gumroad para Apoyo -->
     <script src="https://gumroad.com/js/gumroad.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { 
-            background-color: #0b130b; 
+            background-color: #090d09; 
             color: #f1f5f9; 
             font-family: 'Poppins', sans-serif; 
         }
@@ -24,196 +24,335 @@
             letter-spacing: 2px;
         }
         .grass-pattern {
-            background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(5,46,22,0.8) 100%);
+            background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, rgba(3,26,13,0.95) 100%);
         }
     </style>
 </head>
 <body class="min-h-screen p-3 sm:p-6 border-t-4 border-emerald-500 flex flex-col justify-between grass-pattern">
 
-    <div class="max-w-3xl mx-auto w-full">
+    <div class="max-w-2xl mx-auto w-full">
         <!-- Header -->
-        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 border-b border-emerald-900/60 pb-4">
+        <header class="flex justify-between items-center gap-2 mb-4 sm:mb-6 border-b border-emerald-900/60 pb-3">
             <div class="flex items-center gap-2">
-                <span class="text-4xl">🏆</span>
-                <h1 class="text-3xl sm:text-4xl font-stadium tracking-wider text-white">
-                    EL <span class="text-emerald-400">MÍSTICO</span>
+                <span class="text-3xl">⚽</span>
+                <h1 class="text-2xl sm:text-4xl font-stadium tracking-wider text-white">
+                    PASO A <span class="text-emerald-400">PASO</span>
                 </h1>
             </div>
             
-            <div class="flex items-center gap-2">
-                <!-- Botón de Apoyo / Donación libre -->
-                <a class="gumroad-button bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 px-4 rounded-lg shadow-lg shadow-amber-500/20 transition text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 cursor-pointer" 
-                   href="https://manusaldias.gumroad.com/l/ufquvf">
-                    <span>☕</span> Invitar un Cafecito
-                </a>
-            </div>
+            <!-- Botón de Apoyo -->
+            <a class="gumroad-button bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 sm:px-4 rounded-lg shadow-lg shadow-emerald-600/30 transition text-xs sm:text-sm uppercase tracking-wider flex items-center gap-1.5 cursor-pointer whitespace-nowrap" 
+               href="https://manusaldias.gumroad.com/l/ufquvf">
+                <span>🙌</span> <span>Apoyar Proyecto</span>
+            </a>
         </header>
 
-        <!-- Cancha / Área de Juego -->
-        <main class="bg-slate-900/90 border border-emerald-800/50 rounded-2xl p-5 sm:p-8 shadow-2xl backdrop-blur-md mb-8">
+        <!-- Barra de Estadísticas de Carrera (Mobile Optimized) -->
+        <div class="grid grid-cols-3 gap-2 bg-slate-900/90 p-3 rounded-xl border border-slate-800 mb-4 text-center">
+            <div>
+                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">🔥 Mística</span>
+                <span id="statPotrero" class="text-lg sm:text-2xl font-stadium text-emerald-400">50%</span>
+            </div>
+            <div>
+                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">📋 Broma / DT</span>
+                <span id="statDT" class="text-lg sm:text-2xl font-stadium text-sky-400">50%</span>
+            </div>
+            <div>
+                <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">📣 Hinchada</span>
+                <span id="statHinchada" class="text-lg sm:text-2xl font-stadium text-amber-400">50%</span>
+            </div>
+        </div>
+
+        <!-- Tarjeta Principal del Partido / Decisión -->
+        <main id="mainCard" class="bg-slate-900/95 border border-emerald-800/60 rounded-2xl p-4 sm:p-7 shadow-2xl backdrop-blur-md mb-6">
             
-            <!-- Marcador -->
-            <div class="flex justify-between items-center bg-slate-950/80 p-3 sm:p-4 rounded-xl border border-slate-800 mb-6">
-                <div>
-                    <span class="text-xs text-emerald-400 uppercase font-bold tracking-widest block">Mística Potrera</span>
-                    <span id="scoreText" class="text-2xl sm:text-3xl font-stadium text-white">0 PTS</span>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs text-amber-400 uppercase font-bold tracking-widest block">Jugada</span>
-                    <span id="roundText" class="text-2xl sm:text-3xl font-stadium text-white">1 / 4</span>
-                </div>
-            </div>
-
-            <!-- Contenedor del Desafío -->
-            <div id="gameContainer" class="text-center py-2">
-                <span id="badgeText" class="inline-block bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3">
-                    Desafío Clásico
+            <div class="flex justify-between items-center mb-3">
+                <span id="stageBadge" class="bg-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full uppercase">
+                    Etapa 1: Quinta División
                 </span>
-                
-                <h2 id="questionTitle" class="text-2xl sm:text-3xl font-stadium text-white mb-3">
-                    Cargando jugada...
-                </h2>
-                
-                <p id="questionDesc" class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto mb-6">
-                    Probá tu conocimiento de potrero y cancha.
-                </p>
-
-                <!-- Opciones -->
-                <div id="optionsGrid" class="grid grid-cols-1 gap-3 max-w-lg mx-auto">
-                    <!-- Las opciones se cargan con JS -->
-                </div>
+                <span id="matchNumber" class="text-xs text-slate-400 font-medium">
+                    Fecha 1 de 10
+                </span>
             </div>
 
+            <h2 id="eventTitle" class="text-xl sm:text-3xl font-stadium text-white mb-2 leading-snug">
+                Cargando inicio de carrera...
+            </h2>
+
+            <p id="eventDesc" class="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
+                Preparando el terreno de juego.
+            </p>
+
+            <!-- Opciones de Decisiones Tácticas / Vida de Jugador -->
+            <div id="decisionsGrid" class="space-y-2.5">
+                <!-- Se inyectan con JS -->
+            </div>
         </main>
 
-        <!-- Caja de Apoyo al Desarrollo -->
-        <section class="bg-gradient-to-r from-amber-950/40 via-slate-900 to-emerald-950/40 p-5 rounded-2xl border border-amber-500/20 text-center mb-8 shadow-lg">
-            <h3 class="text-xl font-stadium text-amber-400 mb-1">☕ ¿Te sacó una sonrisa?</h3>
-            <p class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto mb-4">
-                Desarrollo juegos e historias independientes sin publicidad molesta. Si querés bancar la causa para seguir agregando más momentos virales y clásicos, podés darme un apoyo o invitarme un cafecito.
+        <!-- Sección de Apoyo para Desarrollo -->
+        <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-emerald-900/50 text-center mb-6 shadow-md">
+            <h3 class="text-lg sm:text-xl font-stadium text-emerald-400 mb-1">🙌 Apoyá el desarrollo del juego</h3>
+            <p class="text-xs text-slate-300 max-w-md mx-auto mb-3 leading-normal">
+                Desarrollo herramientas e historias independientes. Tu apoyo voluntario ayuda a mantener los servidores online y agregar nuevas temporadas, clubes y ligas.
             </p>
-            <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl transition text-sm shadow-md">
-                <span>⚽</span> Invitar Cafecito / Apoyar ($2 - $5)
+            <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl transition text-xs sm:text-sm shadow-md">
+                <span>⚽</span> Apoyar el proyecto ($2 - $5 USD)
             </a>
         </section>
 
-        <!-- Caja de Sugerencias e Ideas -->
-        <section class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 text-center">
-            <h3 class="text-xl font-stadium text-emerald-400 mb-1">💡 Dejá tus sugerencias o ideas para desarrollar</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mb-4">
-                ¿Qué momento histórico, partido picante, meme o función querés que desarrolle en la próxima versión?
+        <!-- Caja de Sugerencias para Futuras Versiones -->
+        <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-slate-800 text-center">
+            <h3 class="text-lg sm:text-xl font-stadium text-amber-400 mb-1">💡 Dejá tus sugerencias o ideas para desarrollar</h3>
+            <p class="text-xs text-slate-400 mb-3">
+                ¿Qué situaciones de vestuario, cargadas o partidos históricos te gustaría que sumemos a la carrera?
             </p>
             
-            <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-3">
-                <input type="text" id="userIdea" required placeholder="Ej: Sumá el 7-0 del clásico platense o audios relatores..." 
-                       class="w-full bg-slate-950 text-white px-4 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition text-sm">
-                    Enviar Idea a la Cancha 🚀
+            <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-2">
+                <input type="text" id="userIdea" required placeholder="Ej: Sumar la posibilidad de jugar en la Selección o pelear un clásico picante..." 
+                       class="w-full bg-slate-950 text-white px-3.5 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-xs sm:text-sm">
+                <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-amber-400 font-bold py-2 rounded-xl border border-amber-500/30 transition text-xs sm:text-sm">
+                    Enviar Sugerencia 🚀
                 </button>
             </form>
-            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Idea anotada! Muchas gracias por el feedback. 🍿</p>
+            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Sugerencia anotada correctamente! Gracias por participar.</p>
         </section>
     </div>
 
     <script>
-        // Preguntas / Situaciones Futboleras
-        const challenges = [
+        // Sistema de Estado del Jugador
+        let playerStats = {
+            potrero: 50,
+            dt: 50,
+            hinchada: 50,
+            goals: 0,
+            titles: 0
+        };
+
+        let currentStep = 0;
+
+        // Historia Extensa de Carrera (10 Decisiones con Riqueza Táctica y Folclórica)
+        const careerEvents = [
             {
-                badge: "🔥 Clásico de la Plata",
-                title: "El mítico 7 a 0",
-                desc: "¿En qué histórico clásico se dio el inolvidable 7 a 0?",
+                stage: "Etapa 1: Quinta División",
+                title: "Prueba de Jugadores",
+                desc: "Minuto 85 en el partido de prueba. El DT del club de Primera te está mirando desde el banco. Vas 0 a 0.",
                 options: [
-                    { text: "Estudiantes vs. Gimnasia (2006)", correct: true },
-                    { text: "Gimnasia vs. Estudiantes (2010)", correct: false },
-                    { text: "Boca vs. River (2000)", correct: false },
-                    { text: "Racing vs. Independiente (2015)", correct: false }
+                    {
+                        text: "Pedís la pelota, encarás a dos y sacás un zapatazo al ángulo.",
+                        effects: { potrero: +15, dt: +10, hinchada: +10, goals: 1 },
+                        feedback: "⚽ ¡Golazo terrible! El DT anotó tu nombre con resaltador."
+                    },
+                    {
+                        text: "Jugás simple a un toque y das indicaciones ordenando al equipo.",
+                        effects: { potrero: -5, dt: +20, hinchada: 0, goals: 0 },
+                        feedback: "📋 Al DT le encantó tu disciplina táctica."
+                    },
+                    {
+                        text: "Trabas con la cabeza y te cruzás con el central rival.",
+                        effects: { potrero: +20, dt: -5, hinchada: +20, goals: 0 },
+                        feedback: "🔥 Mística pura. La gente que estaba en la tribuna te aplaudió."
+                    }
                 ]
             },
             {
-                badge: "🏆 Folclore de Cancha",
-                title: "La mística del bilardismo",
-                desc: "¿Cuál es la frase que resume la vieja escuela de los partidos chivos?",
+                stage: "Etapa 1: Reserva",
+                title: "El Primer Contrato",
+                desc: "Te ofrecen firmar tu primer contrato profesional, pero te entero que el club rival también te está sondeando.",
                 options: [
-                    { text: "El resultado no se negocia, se gana", correct: true },
-                    { text: "Lo importante es competir y divertirse", correct: false },
-                    { text: "Hacer 500 pases aunque perdamos 3 a 0", correct: false }
+                    {
+                        text: "Firmás con el club de tus amores sin dudarlo.",
+                        effects: { potrero: +10, dt: +10, hinchada: +25 },
+                        feedback: "📣 Te ganaste el corazón de los hinchas antes de debutar."
+                    },
+                    {
+                        text: "Negociás un mejor sueldo usando la oferta rival como presión.",
+                        effects: { potrero: +5, dt: -10, hinchada: -15 },
+                        feedback: "💸 Cobrás mejor, pero en el vestuario no gustó mucho."
+                    }
                 ]
             },
             {
-                badge: "🧤 Momento Penal",
-                title: "Minuto 94 en la Libertadores",
-                desc: "Penal decisivo. Tenés el vestuario a favor y toda la cancha encima. ¿Qué hacés?",
+                stage: "Etapa 2: Debut en Primera",
+                title: "Noche de Debut",
+                desc: "Entrás al campo en el segundo tiempo. Perdés 1 a 0 y la pelota te queda picando en el área.",
                 options: [
-                    { text: "Fuerte al medio, rompiéndole el arco", correct: true },
-                    { text: "La picás a lo Abreu (con riesgo de quedar como un fantasma)", correct: false },
-                    { text: "Mirás al banco de suplentes pidiendo auxilio", correct: false }
+                    {
+                        text: "Definís fuerte al primer palo.",
+                        effects: { potrero: +10, dt: +10, hinchada: +15, goals: 1 },
+                        feedback: "⚽ ¡Empate agónico en tu debut!"
+                    },
+                    {
+                        text: "Asistís a tu compañero mejor ubicado.",
+                        effects: { potrero: 0, dt: +20, hinchada: +10 },
+                        feedback: "👏 Gran pase de gol. Demostraste madurez."
+                    }
                 ]
             },
             {
-                badge: "📺 Meme de Vestuario",
-                title: "El jugador Copero",
-                desc: "¿Qué caracteriza al verdadero jugador 'copero'?",
+                stage: "Etapa 2: Clásico de la Ciudad",
+                title: "El Histórico Clásico",
+                desc: "Llegó el día del clásico. El partido está picado y el rival te busca con chicanas.",
                 options: [
-                    { text: "Esconde la pelota, hace tiempo de guapo y gana la serie", correct: true },
-                    { text: "Pide el cambio a los 80 minutos por cansancio", correct: false },
-                    { text: "Sube historias a Instagram en el entretiempo", correct: false }
+                    {
+                        text: "Mantenés la cabeza fría y tirás un caño de potrero.",
+                        effects: { potrero: +20, dt: +10, hinchada: +20 },
+                        feedback: "🎩 El caño levantó a todo el estadio."
+                    },
+                    {
+                        text: "Vas fuerte abajo y armás un tumulto de vestuario.",
+                        effects: { potrero: +15, dt: -15, hinchada: +15 },
+                        feedback: "🟨 Amarilla rápida, pero demostraste guapeza."
+                    }
+                ]
+            },
+            {
+                stage: "Etapa 3: Noche Copera",
+                title: "Recibimiento en la Libertadores",
+                desc: "Copa internacional a cancha llena. Bengalas, humo y rival de jerarquía.",
+                options: [
+                    {
+                        text: "Arengás al equipo en el túnel antes de salir.",
+                        effects: { potrero: +15, dt: +15, hinchada: +20 },
+                        feedback: "🏆 Salieron a comerse la cancha."
+                    },
+                    {
+                        text: "Te concentrás en silencio repasando la táctica.",
+                        effects: { potrero: 0, dt: +15, hinchada: 0 },
+                        feedback: "🧠 Concentración absoluta."
+                    }
+                ]
+            },
+            {
+                stage: "Etapa 3: Momento Histórico",
+                title: "Buscando la Goleada de Leyenda",
+                desc: "Están ganando cómodos. Recordás goleadas míticas como el 7 a 0. ¿Seguís atacando?",
+                options: [
+                    {
+                        text: "No aflojás un segundo: querés hacer historia.",
+                        effects: { potrero: +20, dt: +10, hinchada: +25, goals: 2 },
+                        feedback: "🔥 ¡Goleada épica para el recuerdo eterno!"
+                    },
+                    {
+                        text: "Tocás corto y hacés rotar la pelota para cuidar el físico.",
+                        effects: { potrero: -10, dt: +15, hinchada: -10 },
+                        feedback: "Cuidaste las piernas para la final."
+                    }
+                ]
+            },
+            {
+                stage: "Etapa 4: Definición por Penales",
+                title: "Tanda de Penales en la Final",
+                desc: "Empate en los 90. Te toca patear el quinto y decisivo penal.",
+                options: [
+                    {
+                        text: "Cruzado arriba, rompiendo la red.",
+                        effects: { potrero: +15, dt: +10, hinchada: +20, goals: 1 },
+                        feedback: "⚽ ¡Imparable! La pelota besó la red."
+                    },
+                    {
+                        text: "Se la picás suavemente al arquero.",
+                        effects: { potrero: +30, dt: -10, hinchada: +30, goals: 1 },
+                        feedback: "😱 ¡Locura total! Arriesgadísimo pero histórico."
+                    }
+                ]
+            },
+            {
+                stage: "Etapa 4: Gran Final",
+                title: "Levantar la Copa",
+                desc: "Suena el pitazo final. ¡Son Campeones! La hinchada corea tu nombre.",
+                options: [
+                    {
+                        text: "Subís al alambrado a festejar con los hinchas.",
+                        effects: { potrero: +20, dt: 0, hinchada: +30, titles: 1 },
+                        feedback: "🏆 Imagen de portada para todos los diarios."
+                    },
+                    {
+                        text: "Vas a abrazar al cuerpo técnico y compañeros.",
+                        effects: { potrero: +5, dt: +25, hinchada: +10, titles: 1 },
+                        feedback: "🤝 Un verdadero líder de vestuario."
+                    }
                 ]
             }
         ];
 
-        let currentRound = 0;
-        let score = 0;
+        function updateUI() {
+            // Limita stats entre 0 y 100%
+            playerStats.potrero = Math.min(100, Math.max(0, playerStats.potrero));
+            playerStats.dt = Math.min(100, Math.max(0, playerStats.dt));
+            playerStats.hinchada = Math.min(100, Math.max(0, playerStats.hinchada));
 
-        function loadChallenge() {
-            if (currentRound >= challenges.length) {
-                showFinalResults();
+            document.getElementById('statPotrero').innerText = `${playerStats.potrero}%`;
+            document.getElementById('statDT').innerText = `${playerStats.dt}%`;
+            document.getElementById('statHinchada').innerText = `${playerStats.hinchada}%`;
+        }
+
+        function loadEvent() {
+            if (currentStep >= careerEvents.length) {
+                showCareerSummary();
                 return;
             }
 
-            const c = challenges[currentRound];
-            document.getElementById('badgeText').innerText = c.badge;
-            document.getElementById('questionTitle').innerText = c.title;
-            document.getElementById('questionDesc').innerText = c.desc;
-            document.getElementById('roundText').innerText = `${currentRound + 1} / ${challenges.length}`;
+            const ev = careerEvents[currentStep];
+            document.getElementById('stageBadge').innerText = ev.stage;
+            document.getElementById('matchNumber').innerText = `Paso ${currentStep + 1} de ${careerEvents.length}`;
+            document.getElementById('eventTitle').innerText = ev.title;
+            document.getElementById('eventDesc').innerText = ev.desc;
 
-            const grid = document.getElementById('optionsGrid');
+            const grid = document.getElementById('decisionsGrid');
             grid.innerHTML = '';
 
-            c.options.forEach(opt => {
+            ev.options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition text-sm text-left flex items-center justify-between";
-                btn.innerHTML = `<span>${opt.text}</span> <span>⚽</span>`;
-                btn.onclick = () => answer(opt.correct);
+                btn.className = "w-full bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/80 text-white font-semibold p-3 rounded-xl transition text-xs sm:text-sm text-left leading-normal flex justify-between items-center gap-2";
+                btn.innerHTML = `<span>${opt.text}</span> <span class="text-emerald-400">➡️</span>`;
+                btn.onclick = () => selectOption(opt);
                 grid.appendChild(btn);
             });
+
+            updateUI();
         }
 
-        function answer(isCorrect) {
-            if (isCorrect) {
-                score += 100;
-                alert("⚽ ¡GOLAZO! Demostraste mística pura.");
-            } else {
-                alert("❌ ¡Afuera! Te temblaron las piernas.");
-            }
-            document.getElementById('scoreText').innerText = `${score} PTS`;
-            currentRound++;
-            loadChallenge();
+        function selectOption(opt) {
+            // Aplicar efectos
+            if (opt.effects.potrero) playerStats.potrero += opt.effects.potrero;
+            if (opt.effects.dt) playerStats.dt += opt.effects.dt;
+            if (opt.effects.hinchada) playerStats.hinchada += opt.effects.hinchada;
+            if (opt.effects.goals) playerStats.goals += opt.effects.goals;
+            if (opt.effects.titles) playerStats.titles += opt.effects.titles;
+
+            alert(opt.feedback);
+
+            currentStep++;
+            loadEvent();
         }
 
-        function showFinalResults() {
-            const container = document.getElementById('gameContainer');
-            container.innerHTML = `
-                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3">
-                    Pitazo Final
-                </span>
-                <h2 class="text-3xl font-stadium text-white mb-2">¡Terminó el Partido!</h2>
-                <p class="text-xl text-emerald-400 font-bold mb-4">Puntaje Final: ${score} PTS</p>
-                <p class="text-slate-300 text-sm max-w-md mx-auto mb-6">
-                    ${score >= 300 ? '🔥 ¡Sos un Místico consagrado! La tribuna te aplaude.' : '😅 Te faltó un poco de potrero. ¡Volvé a jugar!'}
-                </p>
-                <button onclick="location.reload()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-6 rounded-xl transition text-sm">
-                    Jugar Otra Vez 🔄
-                </button>
+        function showCareerSummary() {
+            updateUI();
+            const main = document.getElementById('mainCard');
+            
+            let statusTitle = "Leyenda de Potrero";
+            if (playerStats.dt > 75) statusTitle = "Capitán Táctico Inamovible";
+            if (playerStats.hinchada > 75) statusTitle = "Ídolo Eterno del Club";
+
+            main.innerHTML = `
+                <div class="text-center py-2">
+                    <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block">
+                        Carrera Finalizada
+                    </span>
+                    <h2 class="text-3xl font-stadium text-white mb-1">${statusTitle}</h2>
+                    <p class="text-xs text-slate-300 mb-4">Resumen de tu paso por el fútbol profesional:</p>
+                    
+                    <div class="grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-5 text-left text-xs sm:text-sm">
+                        <div>⚽ Goles Convertidos: <strong class="text-emerald-400">${playerStats.goals}</strong></div>
+                        <div>🏆 Títulos Ganados: <strong class="text-amber-400">${playerStats.titles}</strong></div>
+                        <div>🔥 Mística Final: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
+                        <div>📣 Cariño Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
+                    </div>
+
+                    <button onclick="location.reload()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm">
+                        Iniciar Nueva Carrera 🔄
+                    </button>
+                </div>
             `;
         }
 
@@ -222,9 +361,9 @@
             const idea = document.getElementById('userIdea').value;
             if (!idea) return;
             
-            let ideas = JSON.parse(localStorage.getItem('userSuggestions')) || [];
+            let ideas = JSON.parse(localStorage.getItem('gameIdeas')) || [];
             ideas.push(idea);
-            localStorage.setItem('userSuggestions', JSON.stringify(ideas));
+            localStorage.setItem('gameIdeas', JSON.stringify(ideas));
 
             document.getElementById('userIdea').value = '';
             document.getElementById('suggestionFeedback').classList.remove('hidden');
@@ -233,7 +372,8 @@
             }, 4000);
         }
 
-        loadChallenge();
+        // Cargar primera decisión
+        loadEvent();
     </script>
 </body>
 </html>
