@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Místico | Folclore & Chicanas de Fútbol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Favicon Pelota ⚽ -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+
+    <!-- Script de Gumroad para Apoyo/Donaciones -->
+    <script src="https://gumroad.com/js/gumroad.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #0b130b; 
+            color: #f1f5f9; 
+            font-family: 'Poppins', sans-serif; 
+        }
+        .font-stadium { 
+            font-family: 'Bebas Neue', sans-serif; 
+            letter-spacing: 2px;
+        }
+        .grass-pattern {
+            background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(5,46,22,0.8) 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-3 sm:p-6 border-t-4 border-emerald-500 flex flex-col justify-between grass-pattern">
+
+    <div class="max-w-3xl mx-auto w-full">
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 border-b border-emerald-900/60 pb-4">
+            <div class="flex items-center gap-2">
+                <span class="text-4xl">🏆</span>
+                <h1 class="text-3xl sm:text-4xl font-stadium tracking-wider text-white">
+                    EL <span class="text-emerald-400">MÍSTICO</span>
+                </h1>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <!-- Botón de Apoyo / Donación libre -->
+                <a class="gumroad-button bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 px-4 rounded-lg shadow-lg shadow-amber-500/20 transition text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 cursor-pointer" 
+                   href="https://manusaldias.gumroad.com/l/ufquvf">
+                    <span>☕</span> Invitar un Cafecito
+                </a>
+            </div>
+        </header>
+
+        <!-- Cancha / Área de Juego -->
+        <main class="bg-slate-900/90 border border-emerald-800/50 rounded-2xl p-5 sm:p-8 shadow-2xl backdrop-blur-md mb-8">
+            
+            <!-- Marcador -->
+            <div class="flex justify-between items-center bg-slate-950/80 p-3 sm:p-4 rounded-xl border border-slate-800 mb-6">
+                <div>
+                    <span class="text-xs text-emerald-400 uppercase font-bold tracking-widest block">Mística Potrera</span>
+                    <span id="scoreText" class="text-2xl sm:text-3xl font-stadium text-white">0 PTS</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-amber-400 uppercase font-bold tracking-widest block">Jugada</span>
+                    <span id="roundText" class="text-2xl sm:text-3xl font-stadium text-white">1 / 4</span>
+                </div>
+            </div>
+
+            <!-- Contenedor del Desafío -->
+            <div id="gameContainer" class="text-center py-2">
+                <span id="badgeText" class="inline-block bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3">
+                    Desafío Clásico
+                </span>
+                
+                <h2 id="questionTitle" class="text-2xl sm:text-3xl font-stadium text-white mb-3">
+                    Cargando jugada...
+                </h2>
+                
+                <p id="questionDesc" class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto mb-6">
+                    Probá tu conocimiento de potrero y cancha.
+                </p>
+
+                <!-- Opciones -->
+                <div id="optionsGrid" class="grid grid-cols-1 gap-3 max-w-lg mx-auto">
+                    <!-- Las opciones se cargan con JS -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Caja de Apoyo al Desarrollo -->
+        <section class="bg-gradient-to-r from-amber-950/40 via-slate-900 to-emerald-950/40 p-5 rounded-2xl border border-amber-500/20 text-center mb-8 shadow-lg">
+            <h3 class="text-xl font-stadium text-amber-400 mb-1">☕ ¿Te sacó una sonrisa?</h3>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto mb-4">
+                Desarrollo juegos e historias independientes sin publicidad molesta. Si querés bancar la causa para seguir agregando más momentos virales y clásicos, podés darme un apoyo o invitarme un cafecito.
+            </p>
+            <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl transition text-sm shadow-md">
+                <span>⚽</span> Invitar Cafecito / Apoyar ($2 - $5)
+            </a>
+        </section>
+
+        <!-- Caja de Sugerencias e Ideas -->
+        <section class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 text-center">
+            <h3 class="text-xl font-stadium text-emerald-400 mb-1">💡 Dejá tus sugerencias o ideas para desarrollar</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                ¿Qué momento histórico, partido picante, meme o función querés que desarrolle en la próxima versión?
+            </p>
+            
+            <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-3">
+                <input type="text" id="userIdea" required placeholder="Ej: Sumá el 7-0 del clásico platense o audios relatores..." 
+                       class="w-full bg-slate-950 text-white px-4 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-sm">
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition text-sm">
+                    Enviar Idea a la Cancha 🚀
+                </button>
+            </form>
+            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Idea anotada! Muchas gracias por el feedback. 🍿</p>
+        </section>
+    </div>
+
+    <script>
+        // Preguntas / Situaciones Futboleras
+        const challenges = [
+            {
+                badge: "🔥 Clásico de la Plata",
+                title: "El mítico 7 a 0",
+                desc: "¿En qué histórico clásico se dio el inolvidable 7 a 0?",
+                options: [
+                    { text: "Estudiantes vs. Gimnasia (2006)", correct: true },
+                    { text: "Gimnasia vs. Estudiantes (2010)", correct: false },
+                    { text: "Boca vs. River (2000)", correct: false },
+                    { text: "Racing vs. Independiente (2015)", correct: false }
+                ]
+            },
+            {
+                badge: "🏆 Folclore de Cancha",
+                title: "La mística del bilardismo",
+                desc: "¿Cuál es la frase que resume la vieja escuela de los partidos chivos?",
+                options: [
+                    { text: "El resultado no se negocia, se gana", correct: true },
+                    { text: "Lo importante es competir y divertirse", correct: false },
+                    { text: "Hacer 500 pases aunque perdamos 3 a 0", correct: false }
+                ]
+            },
+            {
+                badge: "🧤 Momento Penal",
+                title: "Minuto 94 en la Libertadores",
+                desc: "Penal decisivo. Tenés el vestuario a favor y toda la cancha encima. ¿Qué hacés?",
+                options: [
+                    { text: "Fuerte al medio, rompiéndole el arco", correct: true },
+                    { text: "La picás a lo Abreu (con riesgo de quedar como un fantasma)", correct: false },
+                    { text: "Mirás al banco de suplentes pidiendo auxilio", correct: false }
+                ]
+            },
+            {
+                badge: "📺 Meme de Vestuario",
+                title: "El jugador Copero",
+                desc: "¿Qué caracteriza al verdadero jugador 'copero'?",
+                options: [
+                    { text: "Esconde la pelota, hace tiempo de guapo y gana la serie", correct: true },
+                    { text: "Pide el cambio a los 80 minutos por cansancio", correct: false },
+                    { text: "Sube historias a Instagram en el entretiempo", correct: false }
+                ]
+            }
+        ];
+
+        let currentRound = 0;
+        let score = 0;
+
+        function loadChallenge() {
+            if (currentRound >= challenges.length) {
+                showFinalResults();
+                return;
+            }
+
+            const c = challenges[currentRound];
+            document.getElementById('badgeText').innerText = c.badge;
+            document.getElementById('questionTitle').innerText = c.title;
+            document.getElementById('questionDesc').innerText = c.desc;
+            document.getElementById('roundText').innerText = `${currentRound + 1} / ${challenges.length}`;
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+
+            c.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition text-sm text-left flex items-center justify-between";
+                btn.innerHTML = `<span>${opt.text}</span> <span>⚽</span>`;
+                btn.onclick = () => answer(opt.correct);
+                grid.appendChild(btn);
+            });
+        }
+
+        function answer(isCorrect) {
+            if (isCorrect) {
+                score += 100;
+                alert("⚽ ¡GOLAZO! Demostraste mística pura.");
+            } else {
+                alert("❌ ¡Afuera! Te temblaron las piernas.");
+            }
+            document.getElementById('scoreText').innerText = `${score} PTS`;
+            currentRound++;
+            loadChallenge();
+        }
+
+        function showFinalResults() {
+            const container = document.getElementById('gameContainer');
+            container.innerHTML = `
+                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3">
+                    Pitazo Final
+                </span>
+                <h2 class="text-3xl font-stadium text-white mb-2">¡Terminó el Partido!</h2>
+                <p class="text-xl text-emerald-400 font-bold mb-4">Puntaje Final: ${score} PTS</p>
+                <p class="text-slate-300 text-sm max-w-md mx-auto mb-6">
+                    ${score >= 300 ? '🔥 ¡Sos un Místico consagrado! La tribuna te aplaude.' : '😅 Te faltó un poco de potrero. ¡Volvé a jugar!'}
+                </p>
+                <button onclick="location.reload()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-6 rounded-xl transition text-sm">
+                    Jugar Otra Vez 🔄
+                </button>
+            `;
+        }
+
+        function sendSuggestion(e) {
+            e.preventDefault();
+            const idea = document.getElementById('userIdea').value;
+            if (!idea) return;
+            
+            let ideas = JSON.parse(localStorage.getItem('userSuggestions')) || [];
+            ideas.push(idea);
+            localStorage.setItem('userSuggestions', JSON.stringify(ideas));
+
+            document.getElementById('userIdea').value = '';
+            document.getElementById('suggestionFeedback').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('suggestionFeedback').classList.add('hidden');
+            }, 4000);
+        }
+
+        loadChallenge();
+    </script>
+</body>
+</html>
