@@ -3,486 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paso a Paso | Simulador de Carrera Futbolera</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Favicon Pelota ⚽ -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
-
-    <!-- Script de Gumroad para Apoyo -->
-    <script src="https://gumroad.com/js/gumroad.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Catálogo - Venta por Encargo</title>
     <style>
-        body { 
-            background-color: #080d08; 
-            color: #f1f5f9; 
-            font-family: 'Poppins', sans-serif; 
-            user-select: none;
-        }
-        .font-stadium { 
-            font-family: 'Bebas Neue', sans-serif; 
-            letter-spacing: 2px;
-        }
-        .grass-pattern {
-            background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(2,20,9,0.98) 100%);
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f9; color: #333; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .producto { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; }
+        .producto:hover { transform: translateY(-5px); }
+        .producto img { width: 100%; height: 250px; object-fit: cover; border-radius: 6px; }
+        .precio { font-size: 1.2em; font-weight: bold; color: #2c3e50; margin: 10px 0; }
+        select, button { margin-top: 10px; padding: 12px; width: 100%; border: 1px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box; }
+        button { background-color: #000; color: white; border: none; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+        button:hover { background-color: #333; }
+        .carrito { margin: 40px auto 0; max-width: 600px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .carrito ul { list-style: none; padding: 0; }
+        .carrito li { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
+        .wpp-btn { background-color: #25D366; color: white; font-size: 1.1em; margin-top: 20px; }
+        .wpp-btn:hover { background-color: #1ebe5d; }
     </style>
 </head>
-<body class="min-h-screen p-3 sm:p-6 border-t-4 border-emerald-500 flex flex-col justify-between grass-pattern relative overflow-x-hidden">
+<body>
 
-    <div class="max-w-2xl mx-auto w-full">
-        <!-- Header -->
-        <header class="flex justify-between items-center gap-2 mb-4 border-b border-emerald-900/60 pb-3">
-            <div class="flex items-center gap-2">
-                <span class="text-3xl">⚽</span>
-                <h1 class="text-2xl sm:text-4xl font-stadium tracking-wider text-white">
-                    PASO A <span class="text-emerald-400">PASO</span>
-                </h1>
-            </div>
-            
-            <!-- Botón de Apoyo -->
-            <a class="gumroad-button bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 sm:px-4 rounded-lg shadow-lg shadow-emerald-600/30 transition text-xs sm:text-sm uppercase tracking-wider flex items-center gap-1.5 cursor-pointer whitespace-nowrap" 
-               href="https://manusaldias.gumroad.com/l/ufquvf">
-                <span>🙌</span> <span>Apoyar Proyecto</span>
-            </a>
-        </header>
+    <h1>Catálogo Disponible</h1>
+    
+    <div class="catalogo" id="catalogo"></div>
 
-        <!-- Dashboard del Jugador -->
-        <div class="grid grid-cols-4 gap-1.5 bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 mb-4 text-center">
-            <div>
-                <span class="text-[9px] sm:text-xs text-amber-400 uppercase font-bold block">🎂 Edad</span>
-                <span id="statEdad" class="text-base sm:text-xl font-stadium text-amber-400">16 Años</span>
-            </div>
-            <div>
-                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">🔥 Mística</span>
-                <span id="statPotrero" class="text-base sm:text-xl font-stadium text-emerald-400">50%</span>
-            </div>
-            <div>
-                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">📋 DT</span>
-                <span id="statDT" class="text-base sm:text-xl font-stadium text-sky-400">50%</span>
-            </div>
-            <div>
-                <span class="text-[9px] sm:text-xs text-slate-400 uppercase font-bold block">⚽ Goles</span>
-                <span id="statGoles" class="text-base sm:text-xl font-stadium text-white">0</span>
-            </div>
-        </div>
-
-        <!-- Tarjeta Principal del Evento -->
-        <main id="mainCard" class="bg-slate-900/95 border border-emerald-800/60 rounded-2xl p-4 sm:p-7 shadow-2xl backdrop-blur-md mb-6 relative">
-            
-            <div class="flex justify-between items-center mb-3">
-                <span id="stageBadge" class="bg-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full uppercase">
-                    Cargando...
-                </span>
-                <span id="matchNumber" class="text-xs text-slate-400 font-medium">
-                    Etapa 1 de 11
-                </span>
-            </div>
-
-            <h2 id="eventTitle" class="text-xl sm:text-3xl font-stadium text-white mb-2 leading-tight">
-                Iniciando carrera...
-            </h2>
-
-            <p id="eventDesc" class="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
-                Saltando a la cancha.
-            </p>
-
-            <!-- Opciones de Decisiones -->
-            <div id="decisionsGrid" class="space-y-2.5">
-                <!-- Inyectadas por JS -->
-            </div>
-        </main>
-
-        <!-- Bloque de Apoyo al Desarrollador -->
-        <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-emerald-900/50 text-center mb-6 shadow-md">
-            <h3 class="text-lg sm:text-xl font-stadium text-emerald-400 mb-1">🙌 Apoyá el desarrollo del juego</h3>
-            <p class="text-xs text-slate-300 max-w-md mx-auto mb-3 leading-normal">
-                Desarrollo juegos e historias independientes. Tu apoyo nos ayuda a seguir sumando temporadas, decisiones complejas y momentos futboleros.
-            </p>
-            <a href="https://manusaldias.gumroad.com/l/ufquvf" class="gumroad-button inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl transition text-xs sm:text-sm shadow-md">
-                <span>⚽</span> Apoyar el proyecto ($2 - $5 USD)
-            </a>
-        </section>
-
-        <!-- Caja de Sugerencias -->
-        <section class="bg-slate-900/80 p-4 sm:p-5 rounded-2xl border border-slate-800 text-center">
-            <h3 class="text-lg sm:text-xl font-stadium text-amber-400 mb-1">💡 Dejá tus sugerencias o ideas</h3>
-            <p class="text-xs text-slate-400 mb-3">
-                ¿Qué evento te gustaría vivir a cierta edad (ej: retiro a los 38, ir al Mundial a los 26)?
-            </p>
-            
-            <form id="suggestionForm" onsubmit="sendSuggestion(event)" class="max-w-md mx-auto space-y-2">
-                <input type="text" id="userIdea" required placeholder="Ej: Sumar oferta de Arabia a los 34 años, lesión de rodilla a los 22..." 
-                       class="w-full bg-slate-950 text-white px-3.5 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-xs sm:text-sm">
-                <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-amber-400 font-bold py-2 rounded-xl border border-amber-500/30 transition text-xs sm:text-sm">
-                    Enviar Sugerencia 🚀
-                </button>
-            </form>
-            <p id="suggestionFeedback" class="text-xs text-emerald-400 mt-2 hidden">¡Sugerencia recibida! Muchas gracias.</p>
-        </section>
-    </div>
-
-    <!-- Modal In-Game de Notificación -->
-    <div id="gameModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
-        <div class="bg-slate-900 p-5 sm:p-6 rounded-2xl max-w-sm w-full border border-emerald-500/40 text-center shadow-2xl transform transition-all">
-            <div id="modalIcon" class="text-4xl mb-2">⚽</div>
-            <h3 id="modalTitle" class="text-2xl font-stadium text-white mb-2">¡Resultado!</h3>
-            <p id="modalMessage" class="text-xs sm:text-sm text-slate-300 mb-5 leading-relaxed">
-                Descripción del suceso.
-            </p>
-            <button onclick="closeGameModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-sm">
-                Continuar Carrera ⏩
-            </button>
-        </div>
+    <div class="carrito" id="seccion-carrito" style="display: none;">
+        <h2>Tu Pedido</h2>
+        <ul id="lista-carrito"></ul>
+        <h3 style="text-align: right;">Total: $<span id="total">0</span></h3>
+        <button class="wpp-btn" onclick="enviarWhatsApp()">Confirmar por WhatsApp</button>
     </div>
 
     <script>
-        // Estadísticas del Jugador
-        let playerStats = {
-            age: 16,
-            potrero: 50,
-            dt: 50,
-            hinchada: 50,
-            goals: 0,
-            titles: 0
-        };
-
-        let currentStep = 0;
-
-        // Cronología Extensa por Edades
-        const careerEvents = [
-            {
-                age: 16,
-                stage: "16 Años - Quinta División",
-                title: "La Prueba en Inferiores",
-                desc: "Tenés 16 años y jugás tu primera prueba formal en el club. Vas 0 a 0 y el DT te mira desde el banco.",
-                options: [
-                    {
-                        text: "Pedís la pelota, encaras al central y sacas un zapatazo cruzado.",
-                        effects: { potrero: +15, dt: +10, hinchada: +10, goals: 1 },
-                        icon: "⚽",
-                        feedback: "¡GOLAZO! Clavaste la pelota en el ángulo. Te ficharon para las inferiores del club."
-                    },
-                    {
-                        text: "Jugás simple a un toque y das indicaciones para ordenar al equipo.",
-                        effects: { potrero: -5, dt: +20, hinchada: 0, goals: 0 },
-                        icon: "📋",
-                        feedback: "Al cuerpo técnico le encantó tu inteligencia táctica a tan corta edad."
-                    }
-                ]
-            },
-            {
-                age: 18,
-                stage: "18 Años - El Debut",
-                title: "Primer Partido Oficial",
-                desc: "Cumpliste 18 años y te citan por primera vez en el plantel profesional. Entrás en el segundo tiempo.",
-                options: [
-                    {
-                        text: "Definís de primera rompiéndole el arco al arquero rival.",
-                        effects: { potrero: +10, dt: +10, hinchada: +15, goals: 1 },
-                        icon: "⚽",
-                        feedback: "¡Golazo de debut con 18 años! La cancha entera coreó tu nombre."
-                    },
-                    {
-                        text: "Metés una asistencia de gol con un pase entre líneas perfecto.",
-                        effects: { potrero: +5, dt: +20, hinchada: +10 },
-                        icon: "🎯",
-                        feedback: "Asistencia magistral. El periodismo te catalogó como la 'joya' de la cantera."
-                    }
-                ]
-            },
-            {
-                age: 20,
-                stage: "20 Años - El Clásico",
-                title: "La Noche del 7 a 0",
-                desc: "A tus 20 años jugás tu primer clásico de titular. Van 4-0 arriba y el rival está desbordado.",
-                options: [
-                    {
-                        text: "Apretás el acelerador e ir a buscar la goleada histórica del 7-0.",
-                        effects: { potrero: +25, dt: +10, hinchada: +30, goals: 2 },
-                        icon: "🔥",
-                        feedback: "¡HISTÓRICO 7-0! Tarde gloriosa que la hinchada recordará para siempre."
-                    },
-                    {
-                        text: "Tocás corto y hacés rotar la pelota para cuidar el físico.",
-                        effects: { potrero: -10, dt: +10, hinchada: -15 },
-                        icon: "🧱",
-                        feedback: "Ganaron cómodos, pero la tribuna se quedó con ganas de hacer más historia."
-                    }
-                ]
-            },
-            {
-                age: 22,
-                stage: "22 Años - Madurez Táctica",
-                title: "Pelea en el Vestuario",
-                desc: "En el entretiempo, el capitán se agarra fuerte con el DT por el esquema táctico.",
-                options: [
-                    {
-                        text: "Ponés paños fríos y pedís enfocarse en ganar los 3 puntos.",
-                        effects: { potrero: +10, dt: +15, hinchada: +10 },
-                        icon: "🤝",
-                        feedback: "Demostraste liderazgo de capitán con solo 22 años."
-                    },
-                    {
-                        text: "Bancás al capitán exigiendo salir a atacar más.",
-                        effects: { potrero: +15, dt: -15, hinchada: +15 },
-                        icon: "⚔️",
-                        feedback: "El grupo se unió a muerte, aunque al DT no le gustó la rebelión."
-                    }
-                ]
-            },
-            {
-                age: 24,
-                stage: "24 Años - Gloria Copera",
-                title: "Noche de Copa en Brasil",
-                desc: "Pico de rendimiento físico. Jugás la vuelta de la semifinal en Río de Janeiro.",
-                options: [
-                    {
-                        text: "Copás el medio campo y manejás los tiempos con mística.",
-                        effects: { potrero: +20, dt: +15, hinchada: +25, goals: 1 },
-                        icon: "🏆",
-                        feedback: "Cátedra de fútbol en Brasil. Clasificaron a la gran final."
-                    },
-                    {
-                        text: "Presionás al árbitro ante cada fallo para enfriar el partido.",
-                        effects: { potrero: +25, dt: +5, hinchada: +20 },
-                        icon: "🧠",
-                        feedback: "Mística copera pura. Aguantaron el resultado histórico."
-                    }
-                ]
-            },
-            {
-                age: 26,
-                stage: "26 Años - El Dilema",
-                title: "Oferta de Europa vs. Amor al Club",
-                desc: "Tenés 26 años, estás en tu mejor momento y llega una oferta millonaria del fútbol europeo.",
-                options: [
-                    {
-                        text: "Rechazás los millones para salir Campeón de América con tu club.",
-                        effects: { potrero: +20, dt: +15, hinchada: +40, titles: 1 },
-                        icon: "💙",
-                        feedback: "¡CAMPEONES DE AMÉRICA! Te convertiste en bandera del club."
-                    },
-                    {
-                        text: "Aceptás dar el salto a Europa para asegurar tu futuro.",
-                        effects: { potrero: -10, dt: -10, hinchada: -25, titles: 1 },
-                        icon: "✈️",
-                        feedback: "Te fuiste a Europa ganando títulos allá, aunque la hinchada extrañó tu presencia."
-                    }
-                ]
-            },
-            {
-                age: 28,
-                stage: "28 Años - Consagracion",
-                title: "Llamado a la Selección",
-                desc: "Te citan a la Selección en tu plenitud física para jugar las Eliminatorias.",
-                options: [
-                    {
-                        text: "Pedís la camiseta '10' y te haces cargo de la creación de juego.",
-                        effects: { potrero: +15, dt: +20, hinchada: +20, goals: 2 },
-                        icon: "🇦🇷",
-                        feedback: "Figura de las Eliminatorias. Todo el país rinde tributo a tu nivel."
-                    },
-                    {
-                        text: "Jugás en función del equipo sin buscar el protagonismo individual.",
-                        effects: { potrero: +5, dt: +25, hinchada: +15 },
-                        icon: "🤝",
-                        feedback: "Rendimiento impecable. Te volviste pilar inamovible para el DT."
-                    }
-                ]
-            },
-            {
-                age: 30,
-                stage: "30 Años - El Mundial",
-                title: "La Cita Máxima",
-                desc: "Llegás a los 30 años jugando la Final del Mundo. Minuto 90 y el partido está 1-1.",
-                options: [
-                    {
-                        text: "Clavás un tiro libre milimétrico al ángulo.",
-                        effects: { potrero: +35, dt: +20, hinchada: +40, goals: 1, titles: 1 },
-                        icon: "⭐",
-                        feedback: "¡¡¡CAMPEONES DEL MUNDO!!! Entraste directo al Olimpo del fútbol."
-                    },
-                    {
-                        text: "Metés un pase de gol entre tres defensores.",
-                        effects: { potrero: +25, dt: +25, hinchada: +35, titles: 1 },
-                        icon: "🏆",
-                        feedback: "¡¡¡CAMPEONES DEL MUNDO!!! Asistencia de leyenda para la tercera estrella."
-                    }
-                ]
-            },
-            {
-                age: 33,
-                stage: "33 Años - Experiencia",
-                title: "El Retorno al Club",
-                desc: "Con 33 años decidís volver a tu club de origen para quemar los últimos cartuchos.",
-                options: [
-                    {
-                        text: "Asumís el rol de líder veterano guiando a los pibes de inferiores.",
-                        effects: { potrero: +15, dt: +20, hinchada: +25 },
-                        icon: "👴",
-                        feedback: "Recibimiento inolvidable a estadio lleno. El ídolo volvió a casa."
-                    },
-                    {
-                        text: "Exigís ser titular indiscutido pese a la falta de ritmo físico.",
-                        effects: { potrero: +10, dt: -15, hinchada: +10 },
-                        icon: "👑",
-                        feedback: "Tu jerarquía salva partidos, aunque el físico ya se siente."
-                    }
-                ]
-            },
-            {
-                age: 36,
-                stage: "36 Años - La Última Copa",
-                title: "El Clásico del Retiro",
-                desc: "Último clásico de tu carrera. El cuerpo pesa, pero la mística está intacta.",
-                options: [
-                    {
-                        text: "Frotás la lámpara y metés un gol de tiro libre al minuto 93.",
-                        effects: { potrero: +30, dt: +10, hinchada: +30, goals: 1, titles: 1 },
-                        icon: "⚽",
-                        feedback: "¡GOLAZO AGÓNICO! Broche de oro perfecto para despedirte de los clásicos."
-                    },
-                    {
-                        text: "Manejás la pelota con la suela aguantando el triunfo 1-0.",
-                        effects: { potrero: +20, dt: +15, hinchada: +20 },
-                        icon: "🎩",
-                        feedback: "Cátedra de potrero y experiencia para asegurar la victoria."
-                    }
-                ]
-            },
-            {
-                age: 38,
-                stage: "38 Años - El Adiós",
-                title: "El Partido de Despedida",
-                desc: "Llegó el día del retiro a los 38 años. Estadio repleto, luces apagadas y micrófono en mano.",
-                options: [
-                    {
-                        text: "Le agradecés entre lágrimas a la hinchada por acompañarte 22 años.",
-                        effects: { potrero: +20, dt: +10, hinchada: +35 },
-                        icon: "👑",
-                        feedback: "Estatua inaugurada en el hall central. Ídolo eterno de la institución."
-                    },
-                    {
-                        text: "Hacés tu último gol de taco para cerrar una carrera mágica.",
-                        effects: { potrero: +30, dt: 0, hinchada: +30, goals: 1 },
-                        icon: "✨",
-                        feedback: "Cierre de película. Te retiraste en lo más alto del fútbol."
-                    }
-                ]
-            }
+        // CONFIGURACIÓN
+        const NUMERO_WPP = "5491100000000"; // Tu número acá
+        
+        // CATÁLOGO DE PRODUCTOS (Podés ir agregando más acá)
+        const productos = [
+            { id: 1, nombre: "Perfume Xerjoff Soprano (Inspiración)", precio: 45000, img: "https://via.placeholder.com/250", talles: [] },
+            { id: 2, nombre: "Funda Transparente Reforzada", precio: 8500, img: "https://via.placeholder.com/250", talles: ["iPhone 7", "iPhone 13", "Samsung S23"] },
+            { id: 3, nombre: "Buzo Canguro", precio: 22000, img: "https://via.placeholder.com/250", talles: ["S", "M", "L", "XL"] }
         ];
 
-        function updateUI() {
-            playerStats.potrero = Math.min(100, Math.max(0, playerStats.potrero));
-            playerStats.dt = Math.min(100, Math.max(0, playerStats.dt));
-            playerStats.hinchada = Math.min(100, Math.max(0, playerStats.hinchada));
+        let carrito = [];
 
-            document.getElementById('statEdad').innerText = `${playerStats.age} Años`;
-            document.getElementById('statPotrero').innerText = `${playerStats.potrero}%`;
-            document.getElementById('statDT').innerText = `${playerStats.dt}%`;
-            document.getElementById('statGoles').innerText = playerStats.goals;
-        }
+        function renderizarCatalogo() {
+            const contenedor = document.getElementById("catalogo");
+            productos.forEach(prod => {
+                let opcionesTalle = prod.talles.length > 0 
+                    ? `<select id="talle-${prod.id}">` + prod.talles.map(t => `<option value="${t}">${t}</option>`).join('') + `</select>`
+                    : `<select id="talle-${prod.id}" style="display:none;"><option value="N/A">N/A</option></select>`;
 
-        function loadEvent() {
-            if (currentStep >= careerEvents.length) {
-                showCareerSummary();
-                return;
-            }
-
-            const ev = careerEvents[currentStep];
-            playerStats.age = ev.age; 
-
-            document.getElementById('stageBadge').innerText = ev.stage;
-            document.getElementById('matchNumber').innerText = `Etapa ${currentStep + 1} de ${careerEvents.length}`;
-            document.getElementById('eventTitle').innerText = ev.title;
-            document.getElementById('eventDesc').innerText = ev.desc;
-
-            const grid = document.getElementById('decisionsGrid');
-            grid.innerHTML = '';
-
-            ev.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full bg-slate-800 hover:bg-emerald-600/20 border border-slate-700 hover:border-emerald-500/80 text-white font-semibold p-3.5 rounded-xl transition text-xs sm:text-sm text-left leading-snug flex justify-between items-center gap-2 shadow-sm";
-                btn.innerHTML = `<span>${opt.text}</span> <span class="text-emerald-400 font-bold">➡️</span>`;
-                btn.onclick = () => selectOption(opt);
-                grid.appendChild(btn);
-            });
-
-            updateUI();
-        }
-
-        function selectOption(opt) {
-            if (opt.effects.potrero) playerStats.potrero += opt.effects.potrero;
-            if (opt.effects.dt) playerStats.dt += opt.effects.dt;
-            if (opt.effects.hinchada) playerStats.hinchada += opt.effects.hinchada;
-            if (opt.effects.goals) playerStats.goals += opt.effects.goals;
-            if (opt.effects.titles) playerStats.titles += opt.effects.titles;
-
-            showGameModal(opt.icon || "⚽", opt.feedback);
-        }
-
-        function showGameModal(icon, message) {
-            document.getElementById('modalIcon').innerText = icon;
-            document.getElementById('modalMessage').innerText = message;
-            document.getElementById('gameModal').classList.replace('hidden', 'flex');
-        }
-
-        function closeGameModal() {
-            document.getElementById('gameModal').classList.replace('flex', 'hidden');
-            currentStep++;
-            loadEvent();
-        }
-
-        function showCareerSummary() {
-            updateUI();
-            const main = document.getElementById('mainCard');
-            
-            let statusTitle = "Leyenda Absoluta (16 a 38 Años)";
-            if (playerStats.hinchada > 85) statusTitle = "Ídolo Eterno del Club & Dios de la Hinchada";
-            else if (playerStats.dt > 85) statusTitle = "Mariscal Táctico & Futuro DT";
-            else if (playerStats.potrero > 85) statusTitle = "El Rey del Potrero y la Mística";
-
-            main.innerHTML = `
-                <div class="text-center py-2">
-                    <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block">
-                        Carrera Completa (22 Años de Trayectoria)
-                    </span>
-                    <h2 class="text-3xl font-stadium text-white mb-1">${statusTitle}</h2>
-                    <p class="text-xs text-slate-300 mb-4">Números e impacto de tu historia profesional:</p>
-                    
-                    <div class="grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-5 text-left text-xs sm:text-sm">
-                        <div>⚽ Goles Totales: <strong class="text-emerald-400">${playerStats.goals}</strong></div>
-                        <div>🏆 Títulos Ganados: <strong class="text-amber-400">${playerStats.titles}</strong></div>
-                        <div>🔥 Mística Final: <strong class="text-emerald-400">${playerStats.potrero}%</strong></div>
-                        <div>📣 Cariño Hinchada: <strong class="text-amber-400">${playerStats.hinchada}%</strong></div>
+                contenedor.innerHTML += `
+                    <div class="producto">
+                        <img src="${prod.img}" alt="${prod.nombre}">
+                        <h3>${prod.nombre}</h3>
+                        <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
+                        ${opcionesTalle}
+                        <button onclick="agregarAlCarrito(${prod.id})">Agregar al pedido</button>
                     </div>
-
-                    <button onclick="location.reload()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg">
-                        Revivir Nueva Carrera (16 a 38 Años) 🔄
-                    </button>
-                </div>
-            `;
+                `;
+            });
         }
 
-        function sendSuggestion(e) {
-            e.preventDefault();
-            const idea = document.getElementById('userIdea').value;
-            if (!idea) return;
-            
-            let ideas = JSON.parse(localStorage.getItem('gameIdeas')) || [];
-            ideas.push(idea);
-            localStorage.setItem('gameIdeas', JSON.stringify(ideas));
-
-            document.getElementById('userIdea').value = '';
-            document.getElementById('suggestionFeedback').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('suggestionFeedback').classList.add('hidden');
-            }, 4000);
-        }
-
-        loadEvent();
-    </script>
-</body>
-</html>
+        function agregarAlCarrito(id) {
+            const prod = productos.find(p => p.id === id);
+            const talle = document.getElementById(`talle-${id}`).value;
+            carrito.push({ nombre: prod.nombre, precio: prod.precio, talle: talle });
+            actualizarCarrito();
