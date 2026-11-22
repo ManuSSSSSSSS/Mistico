@@ -1,74 +1,612 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo - Venta por Encargo</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f9; color: #333; }
-        h1 { text-align: center; margin-bottom: 30px; }
-        .catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .producto { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; }
-        .producto:hover { transform: translateY(-5px); }
-        .producto img { width: 100%; height: 250px; object-fit: cover; border-radius: 6px; }
-        .precio { font-size: 1.2em; font-weight: bold; color: #2c3e50; margin: 10px 0; }
-        select, button { margin-top: 10px; padding: 12px; width: 100%; border: 1px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box; }
-        button { background-color: #000; color: white; border: none; cursor: pointer; font-weight: 600; transition: background 0.2s; }
-        button:hover { background-color: #333; }
-        .carrito { margin: 40px auto 0; max-width: 600px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .carrito ul { list-style: none; padding: 0; }
-        .carrito li { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
-        .wpp-btn { background-color: #25D366; color: white; font-size: 1.1em; margin-top: 20px; }
-        .wpp-btn:hover { background-color: #1ebe5d; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo Online</title>
+  <style>
+    :root {
+      --acento: #111827;
+      --acento-hover: #374151;
+      --whatsapp: #25D366;
+      --whatsapp-hover: #1ebe5d;
+      --fondo: #f8f9fa;
+      --blanco: #ffffff;
+      --texto: #1f2937;
+      --gris: #6b7280;
+      --borde: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--fondo); color: var(--texto); padding-bottom: 90px; }
+
+    header {
+      background: var(--blanco);
+      border-bottom: 1px solid var(--borde);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 16px;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; color: var(--acento); }
+    .brand p { font-size: 0.8rem; color: var(--gris); margin-top: 2px; }
+
+    .btn-cart-top {
+      background: var(--acento);
+      color: var(--blanco);
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-cart-top:hover { background: var(--acento-hover); }
+    .badge {
+      background: var(--whatsapp);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 16px; }
+
+    .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
+    .search-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: var(--blanco);
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--acento); }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .categories::-webkit-scrollbar { display: none; }
+    .cat-btn {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      color: var(--texto);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .cat-btn.active {
+      background: var(--acento);
+      color: var(--blanco);
+      border-color: var(--acento);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    }
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .card {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+    .card-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #eee; }
+    .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+    .card-cat { font-size: 0.72rem; text-transform: uppercase; color: var(--gris); font-weight: 600; margin-bottom: 4px; }
+    .card-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; line-height: 1.25; }
+    .card-price { font-size: 1.05rem; font-weight: 800; color: var(--acento); margin-top: auto; margin-bottom: 10px; }
+    .card-btn {
+      width: 100%;
+      padding: 9px;
+      border: none;
+      border-radius: 8px;
+      background: var(--acento);
+      color: var(--blanco);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .floating-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 460px;
+      background: var(--acento);
+      color: var(--blanco);
+      padding: 14px 18px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      z-index: 25;
+    }
+    .floating-bar.visible { display: flex; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 40;
+    }
+    .modal-backdrop.open { display: flex; }
+    @media (min-width: 640px) {
+      .modal-backdrop { align-items: center; padding: 16px; }
+    }
+
+    .modal {
+      background: var(--blanco);
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 18px 18px 0 0;
+      padding: 20px;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .modal { border-radius: 18px; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f3f4f6;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .modal-img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px; margin-bottom: 14px; }
+    .modal-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+    .modal-price { font-size: 1.25rem; font-weight: 800; color: var(--acento); margin-bottom: 10px; }
+    .modal-desc { font-size: 0.9rem; color: var(--gris); line-height: 1.45; margin-bottom: 16px; }
+
+    .variants-label { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; display: block; }
+    .variants { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .var-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--borde);
+      background: var(--blanco);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .var-btn.selected { background: var(--acento); color: var(--blanco); border-color: var(--acento); }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--borde);
+    }
+    .cart-item-info h4 { font-size: 0.92rem; margin-bottom: 2px; }
+    .cart-item-info small { color: var(--gris); font-size: 0.8rem; }
+    .qty-controls { display: flex; align-items: center; gap: 8px; }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--borde);
+      background: #f9fafb;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+
+    .form-field { width: 100%; padding: 10px 12px; border: 1px solid var(--borde); border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; }
+
+    .btn-wsp {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--whatsapp);
+      color: var(--blanco);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-wsp:hover { background: var(--whatsapp-hover); }
+
+    .empty-msg { text-align: center; color: var(--gris); padding: 36px 10px; font-size: 0.95rem; grid-column: 1 / -1; }
+  </style>
 </head>
 <body>
 
-    <h1>Catálogo Disponible</h1>
-    
-    <div class="catalogo" id="catalogo"></div>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1 id="store-name"></h1>
+        <p id="store-subtitle"></p>
+      </div>
+      <button class="btn-cart-top" onclick="openCart()">
+        🛒 Carrito <span class="badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
 
-    <div class="carrito" id="seccion-carrito" style="display: none;">
-        <h2>Tu Pedido</h2>
-        <ul id="lista-carrito"></ul>
-        <h3 style="text-align: right;">Total: $<span id="total">0</span></h3>
-        <button class="wpp-btn" onclick="enviarWhatsApp()">Confirmar por WhatsApp</button>
+  <main>
+    <div class="controls">
+      <input type="text" id="search" class="search-input" placeholder="Buscar producto..." oninput="renderProducts()" />
+      <div class="categories" id="categories"></div>
     </div>
 
-    <script>
-        // CONFIGURACIÓN
-        const NUMERO_WPP = "5491100000000"; // Tu número acá
-        
-        // CATÁLOGO DE PRODUCTOS (Podés ir agregando más acá)
-        const productos = [
-            { id: 1, nombre: "Perfume Xerjoff Soprano (Inspiración)", precio: 45000, img: "https://via.placeholder.com/250", talles: [] },
-            { id: 2, nombre: "Funda Transparente Reforzada", precio: 8500, img: "https://via.placeholder.com/250", talles: ["iPhone 7", "iPhone 13", "Samsung S23"] },
-            { id: 3, nombre: "Buzo Canguro", precio: 22000, img: "https://via.placeholder.com/250", talles: ["S", "M", "L", "XL"] }
-        ];
+    <div class="grid" id="product-grid">
+      <div class="empty-msg">Cargando catálogo...</div>
+    </div>
+  </main>
 
-        let carrito = [];
+  <div class="floating-bar" id="floating-bar" onclick="openCart()">
+    <span id="floating-text">Ver carrito</span>
+    <strong id="floating-total">$0</strong>
+  </div>
 
-        function renderizarCatalogo() {
-            const contenedor = document.getElementById("catalogo");
-            productos.forEach(prod => {
-                let opcionesTalle = prod.talles.length > 0 
-                    ? `<select id="talle-${prod.id}">` + prod.talles.map(t => `<option value="${t}">${t}</option>`).join('') + `</select>`
-                    : `<select id="talle-${prod.id}" style="display:none;"><option value="N/A">N/A</option></select>`;
+  <!-- Modal Producto -->
+  <div class="modal-backdrop" id="product-modal" onclick="closeOnBackdrop(event, 'product-modal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+      <img id="m-img" class="modal-img" src="" alt="" />
+      <h2 id="m-title" class="modal-title"></h2>
+      <div id="m-price" class="modal-price"></div>
+      <p id="m-desc" class="modal-desc"></p>
+      <div id="m-variants-wrap">
+        <span class="variants-label">Elegí opción / talle:</span>
+        <div class="variants" id="m-variants"></div>
+      </div>
+      <button class="card-btn" style="padding: 13px; font-size: 0.95rem;" onclick="addSelectedToCart()">Agregar al carrito</button>
+    </div>
+  </div>
 
-                contenedor.innerHTML += `
-                    <div class="producto">
-                        <img src="${prod.img}" alt="${prod.nombre}">
-                        <h3>${prod.nombre}</h3>
-                        <p class="precio">$${prod.precio.toLocaleString('es-AR')}</p>
-                        ${opcionesTalle}
-                        <button onclick="agregarAlCarrito(${prod.id})">Agregar al pedido</button>
-                    </div>
-                `;
-            });
-        }
+  <!-- Modal Carrito -->
+  <div class="modal-backdrop" id="cart-modal" onclick="closeOnBackdrop(event, 'cart-modal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('cart-modal')">✕</button>
+      <h2 class="modal-title" style="margin-bottom: 10px;">Tu pedido</h2>
+      <div id="cart-items"></div>
+      <div id="cart-footer" style="display:none;">
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cart-total">$0</span>
+        </div>
+        <input type="text" id="client-name" class="form-field" placeholder="Tu nombre (opcional)" />
+        <input type="text" id="client-note" class="form-field" placeholder="Envío o retiro / comentario (opcional)" />
+        <button class="btn-wsp" onclick="sendWhatsApp()">Enviar pedido por WhatsApp</button>
+      </div>
+    </div>
+  </div>
 
-        function agregarAlCarrito(id) {
-            const prod = productos.find(p => p.id === id);
-            const talle = document.getElementById(`talle-${id}`).value;
-            carrito.push({ nombre: prod.nombre, precio: prod.precio, talle: talle });
-            actualizarCarrito();
+  <script>
+    /* =======================================================
+       CONFIGURACIÓN DEL CLIENTE (solo editás estas 5 líneas)
+       ======================================================= */
+    const CONFIG = {
+      nombreTienda: "URBANA STORE",
+      subtitulo: "Indumentaria • Envíos a todo el país",
+      whatsapp: "5491112345678",
+      colorAcento: "#111827",
+      // Pegá acá el link CSV de Google Sheets (si lo dejás vacío usa productos de ejemplo)
+      sheetCsvUrl: ""
+    };
+
+    /* Productos de respaldo si todavía no pegaste un link de Google Sheets */
+    const DEMO_PRODUCTOS = [
+      {
+        id: 1,
+        nombre: "Remera Oversize Negra",
+        categoria: "Remeras",
+        precio: 24000,
+        imagen: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80",
+        descripcion: "Algodón peinado 24.1. Corte boxy oversize.",
+        opciones: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 2,
+        nombre: "Buzo Hoodie Gris",
+        categoria: "Buzos",
+        precio: 48000,
+        imagen: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+        descripcion: "Frisa pesada con capucha doble.",
+        opciones: ["M", "L", "XL"]
+      }
+    ];
+
+    let PRODUCTOS = [];
+    let activeCategory = "Todos";
+    let cart = [];
+    let currentProduct = null;
+    let selectedOption = "";
+
+    const formatPrice = (num) => "$" + Number(num || 0).toLocaleString("es-AR");
+
+    /* Parser CSV seguro (soporta comas y comillas dentro de descripciones) */
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], cell = "", inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i], next = text[i + 1];
+        if (c === '"' && inQuotes && next === '"') { cell += '"'; i++; }
+        else if (c === '"') { inQuotes = !inQuotes; }
+        else if (c === ',' && !inQuotes) { row.push(cell.trim()); cell = ""; }
+        else if ((c === '\n' || c === '\r') && !inQuotes) {
+          if (c === '\r' && next === '\n') i++;
+          row.push(cell.trim());
+          if (row.some(v => v !== "")) rows.push(row);
+          row = []; cell = "";
+        } else { cell += c; }
+      }
+      if (cell.length || row.length) {
+        row.push(cell.trim());
+        if (row.some(v => v !== "")) rows.push(row);
+      }
+      return rows;
+    }
+
+    async function loadProducts() {
+      if (!CONFIG.sheetCsvUrl) {
+        PRODUCTOS = DEMO_PRODUCTOS;
+        renderCategories();
+        renderProducts();
+        return;
+      }
+
+      try {
+        const res = await fetch(CONFIG.sheetCsvUrl);
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+        if (rows.length < 2) throw new Error("Planilla vacía");
+
+        const headers = rows[0].map(h => h.toLowerCase().trim());
+        const idx = (name) => headers.indexOf(name);
+
+        PRODUCTOS = rows.slice(1).map((cols, i) => {
+          const activo = idx("activo") >= 0 ? (cols[idx("activo")] || "si").toLowerCase() : "si";
+          if (activo === "no" || activo === "false" || activo === "0") return null;
+
+          const precioRaw = (cols[idx("precio")] || "0").replace(/[^0-9]/g, "");
+          const opcionesRaw = idx("opciones") >= 0 ? cols[idx("opciones")] : "";
+          const opciones = opcionesRaw ? opcionesRaw.split("|").map(o => o.trim()).filter(Boolean) : [];
+
+          return {
+            id: i + 1,
+            nombre: cols[idx("nombre")] || "Sin nombre",
+            categoria: cols[idx("categoria")] || "General",
+            precio: Number(precioRaw) || 0,
+            imagen: cols[idx("imagen")] || "https://via.placeholder.com/500?text=Sin+Foto",
+            descripcion: idx("descripcion") >= 0 ? (cols[idx("descripcion")] || "") : "",
+            opciones
+          };
+        }).filter(Boolean);
+
+        renderCategories();
+        renderProducts();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("product-grid").innerHTML =
+          `<div class="empty-msg">No se pudo cargar el catálogo. Revisá el link CSV de Google Sheets.</div>`;
+      }
+    }
+
+    function init() {
+      document.title = CONFIG.nombreTienda + " | Catálogo";
+      document.getElementById("store-name").textContent = CONFIG.nombreTienda;
+      document.getElementById("store-subtitle").textContent = CONFIG.subtitulo;
+      document.documentElement.style.setProperty("--acento", CONFIG.colorAcento);
+      loadProducts();
+    }
+
+    function renderCategories() {
+      const cats = ["Todos", ...new Set(PRODUCTOS.map(p => p.categoria))];
+      document.getElementById("categories").innerHTML = cats.map(cat => `
+        <button class="cat-btn ${cat === activeCategory ? 'active' : ''}" onclick="setCategory('${cat.replace(/'/g, "\\'")}')">${cat}</button>
+      `).join("");
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const query = document.getElementById("search").value.toLowerCase();
+      const filtered = PRODUCTOS.filter(p => {
+        const matchCat = activeCategory === "Todos" || p.categoria === activeCategory;
+        const matchSearch = p.nombre.toLowerCase().includes(query) || p.categoria.toLowerCase().includes(query);
+        return matchCat && matchSearch;
+      });
+
+      const grid = document.getElementById("product-grid");
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-msg">No se encontraron productos.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="card" onclick="openProduct(${p.id})">
+          <img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" />
+          <div class="card-body">
+            <span class="card-cat">${p.categoria}</span>
+            <h3 class="card-title">${p.nombre}</h3>
+            <div class="card-price">${formatPrice(p.precio)}</div>
+            <button class="card-btn">Ver / Agregar</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openProduct(id) {
+      currentProduct = PRODUCTOS.find(p => p.id === id);
+      if (!currentProduct) return;
+
+      document.getElementById("m-img").src = currentProduct.imagen;
+      document.getElementById("m-title").textContent = currentProduct.nombre;
+      document.getElementById("m-price").textContent = formatPrice(currentProduct.precio);
+      document.getElementById("m-desc").textContent = currentProduct.descripcion;
+
+      const wrap = document.getElementById("m-variants-wrap");
+      const varContainer = document.getElementById("m-variants");
+
+      if (currentProduct.opciones && currentProduct.opciones.length) {
+        wrap.style.display = "block";
+        selectedOption = currentProduct.opciones[0];
+        varContainer.innerHTML = currentProduct.opciones.map(opt => `
+          <button class="var-btn ${opt === selectedOption ? 'selected' : ''}" onclick="selectOption('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>
+        `).join("");
+      } else {
+        wrap.style.display = "none";
+        selectedOption = "";
+      }
+
+      document.getElementById("product-modal").classList.add("open");
+    }
+
+    function selectOption(opt, btn) {
+      selectedOption = opt;
+      document.querySelectorAll(".var-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    }
+
+    function addSelectedToCart() {
+      const key = `${currentProduct.id}-${selectedOption}`;
+      const existing = cart.find(item => item.key === key);
+      if (existing) existing.cantidad++;
+      else cart.push({ key, nombre: currentProduct.nombre, opcion: selectedOption, precio: currentProduct.precio, cantidad: 1 });
+      updateCartUI();
+      closeModal("product-modal");
+    }
+
+    function updateCartUI() {
+      const totalItems = cart.reduce((acc, i) => acc + i.cantidad, 0);
+      const totalMoney = cart.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+      document.getElementById("cart-count").textContent = totalItems;
+      const bar = document.getElementById("floating-bar");
+      if (totalItems > 0) {
+        bar.classList.add("visible");
+        document.getElementById("floating-text").textContent = `🛒 Ver pedido (${totalItems})`;
+        document.getElementById("floating-total").textContent = formatPrice(totalMoney);
+      } else {
+        bar.classList.remove("visible");
+      }
+    }
+
+    function openCart() {
+      renderCartItems();
+      document.getElementById("cart-modal").classList.add("open");
+    }
+
+    function renderCartItems() {
+      const container = document.getElementById("cart-items");
+      const footer = document.getElementById("cart-footer");
+
+      if (!cart.length) {
+        container.innerHTML = `<div class="empty-msg">Todavía no agregaste productos al carrito.</div>`;
+        footer.style.display = "none";
+        return;
+      }
+
+      footer.style.display = "block";
+      container.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.nombre}</h4>
+            <small>${item.opcion ? 'Opción: ' + item.opcion + ' • ' : ''}${formatPrice(item.precio)}</small>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty(${idx}, -1)">-</button>
+            <strong>${item.cantidad}</strong>
+            <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+        </div>
+      `).join("");
+
+      const total = cart.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+      document.getElementById("cart-total").textContent = formatPrice(total);
+    }
+
+    function changeQty(idx, delta) {
+      cart[idx].cantidad += delta;
+      if (cart[idx].cantidad <= 0) cart.splice(idx, 1);
+      updateCartUI();
+      renderCartItems();
+    }
+
+    function sendWhatsApp() {
+      const nombre = document.getElementById("client-name").value.trim();
+      const nota = document.getElementById("client-note").value.trim();
+      const total = cart.reduce((acc, i) => acc + i.precio * i.cantidad, 0);
+
+      let mensaje = `Hola ${CONFIG.nombreTienda}! Quiero hacer el siguiente pedido:\n\n`;
+      cart.forEach(item => {
+        const opt = item.opcion ? ` (${item.opcion})` : "";
+        mensaje += `• ${item.cantidad}x ${item.nombre}${opt} - ${formatPrice(item.precio * item.cantidad)}\n`;
+      });
+      mensaje += `\n*Total: ${formatPrice(total)}*`;
+      if (nombre) mensaje += `\nNombre: ${nombre}`;
+      if (nota) mensaje += `\nNota: ${nota}`;
+
+      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`, "_blank");
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+    function closeOnBackdrop(e, id) { if (e.target.id === id) closeModal(id); }
+
+    init();
+  </script>
+</body>
+</html>
